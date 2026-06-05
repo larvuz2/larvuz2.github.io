@@ -1,6 +1,6 @@
 # Beautiful Presentations Skill — Portable Public Reader
 
-Updated: 2026-06-05T20:05:36.616183+00:00
+Updated: 2026-06-05T20:24:23.742669+00:00
 
 Public reader URL:
 
@@ -36,6 +36,10 @@ python ~/.hermes/skills/creative/beautiful-presentations/scripts/setup_presentat
 ## Important setup caveat
 
 Pasting/reading this skill gives the agent the full workflow, but live URLs require GitHub auth on that VPS/user. The agent needs `GITHUB_TOKEN`, `GH_TOKEN`, `gh auth login`, or git credentials. Without GitHub auth it can still build/QA/export locally, but it cannot create repos or publish the feedback URL.
+
+## PowerPoint/PPTX support
+
+If the user asks for `.pptx` or PowerPoint, export it. Use `scripts/export_pptx.py` for a pixel-faithful PowerPoint file that matches the reviewed web/PDF deck by placing each rendered slide full-bleed in a 16:9 PPTX.
 
 ## Full template source
 
@@ -94,6 +98,7 @@ Use only what the task needs:
 
 - New HTML deck → read `templates/base-deck.html`, then `references/style-presets.md` and `references/slide-patterns.md`.
 - User asks for styles, templates, examples, options, or a new design direction → read `references/enhanced-beautiful-html-templates-gallery.md` first, then inspect the selected template folder before generating final slides.
+- User asks to improve, publish, or QA the public visual template gallery → read `references/visual-template-gallery.md`; use live HTML embeds by default, one visible label per card, and cache-busting verification after GitHub Pages pushes.
 - User asks for the older bold/template gallery → read `references/bold-template-gallery.md`, then inspect the selected template folder before generating final slides.
 - User asks specifically for Sakura Chroma, cassette-package, Japanese product-catalogue, or bold diagonal-ribbon style → read `references/sakura-chroma-source-analysis.md`, then inspect `gallery/beautiful-html-templates/templates/sakura-chroma/template.html` and `design.md` before generating final slides.
 - HTML delivery → read `references/github-pages-preview-delivery.md` and `references/shared-presentations-repo.md`; use the single shared private presentations repo as the source of truth, with a public static preview mirror only when private GitHub Pages is unsupported; never attach raw HTML unless explicitly requested.
@@ -104,10 +109,11 @@ Use only what the task needs:
 - Animation-heavy deck → also read `references/animation-patterns.md`.
 - PDF export → read `references/pdf-export.md`, use `scripts/export_pdf.py` if present.
 - Video export → read `references/video-export.md`, use `scripts/export_video.py` if present.
-- PPTX conversion → read `references/pptx-conversion.md`, use `scripts/extract_pptx.py` if present.
+- PPTX / PowerPoint export from HTML → read `references/pptx-export.md`, use `scripts/export_pptx.py` if present.
+- PPTX conversion from an existing PowerPoint file → read `references/pptx-conversion.md`, use `scripts/extract_pptx.py` if present.
 - Installing, packaging, or verifying the skill on another Hermes profile/VPS → read `references/installation-and-verification.md`; run `scripts/setup_presentations_repos.py` once if the shared private source repo / public preview mirror do not exist yet.
-- Sharing the skill with another agent/user/VPS or answering “is it ready to paste?” → read `references/portable-sharing-checklist.md`; be explicit that live URLs need GitHub auth and one-time repo setup.
-- Adapting an external presentation/design repo into this Hermes skill or making the workflow portable to another model/profile/VPS → read `references/repo-adaptation-and-portability.md`.
+- Sharing the skill with another agent/user/VPS or answering “is it ready to paste?” → read `references/portable-sharing-checklist.md` and `references/agent-handoff-message-pattern.md`; keep the chat handoff extremely brief because the details belong in the public Markdown skill file.
+- Adapting, refreshing, or enhancing an external presentation/design repo into this Hermes skill → read `references/repo-adaptation-and-portability.md` and `references/enhanced-template-gallery-maintenance.md`; duplicate the templates into the skill, inject subtle motion/runtime polish, patch wheel navigation where needed, and verify locally/publicly before claiming it is ready.
 - Final portability test for a pasteable skill that any Hermes agent/model can run → read `references/portable-skill-paste-test.md`.
 - Improving this skill or evaluating output quality → read `references/ramp-up-plan.md`.
 
@@ -536,9 +542,35 @@ Verify:
 
 If animated browser capture is available, use it. Otherwise, static slide video is acceptable as first export.
 
+## PPTX / PowerPoint export
+
+Only export `.pptx` when requested.
+
+If the user asks for a PowerPoint file, `.pptx`, or downloadable PowerPoint version, do it.
+
+Default to a pixel-faithful PPTX: render each approved HTML slide at `1920×1080` and place it full-bleed on a matching 16:9 PowerPoint slide. This is the correct default when the user expects the PowerPoint to look the same as the web/PDF deck after opening or importing into PowerPoint, Keynote, or Google Slides.
+
+Preferred helper:
+
+```bash
+python ~/.hermes/skills/creative/beautiful-presentations/scripts/export_pptx.py deck.html exports/deck.pptx
+```
+
+Verify:
+
+- `.pptx` exists
+- file size > 0
+- zip package opens
+- slide count matches the HTML deck
+- image count matches slide count
+- `ppt/presentation.xml` exists
+- `ppt/slides/slide1.xml` exists
+
+If the user explicitly asks for editable PowerPoint objects, explain the tradeoff: editable PPTX may not match exactly; pixel-faithful PPTX matches the design but flattens slide contents.
+
 ## PPTX conversion
 
-Use this mode when the user provides a `.pptx`.
+Use this mode when the user provides an existing `.pptx` to convert, redesign, or improve.
 
 Process:
 
@@ -566,6 +598,7 @@ Use clean names:
 Project_Name_Deck.html
 Project_Name_Deck_v2.html
 exports/Project_Name_Deck.pdf
+exports/Project_Name_Deck.pptx
 exports/Project_Name_Deck.mp4
 ```
 
@@ -592,6 +625,13 @@ Exported: /absolute/path/exports/Project_Name_Deck.pdf
 Verified: PDF exists and is non-empty.
 ```
 
+For PowerPoint:
+
+```txt
+Exported: /absolute/path/exports/Project_Name_Deck.pptx
+Verified: PPTX exists, opens as a valid package, and slide/image count matches the HTML deck.
+```
+
 For video:
 
 ```txt
@@ -603,6 +643,7 @@ If delivering through Telegram or another gateway, attach exported files with:
 
 ```txt
 MEDIA:/absolute/path/file.pdf
+MEDIA:/absolute/path/file.pptx
 MEDIA:/absolute/path/file.mp4
 ```
 
@@ -887,6 +928,113 @@ When the user asks for a new presentation style, use this gallery as the establi
 ```
 
 
+# File: `references/pptx-export.md`
+
+```markdown
+# PPTX Export
+
+Use this when the user asks for a `.pptx`, PowerPoint file, editable presentation file, or “download as PowerPoint.”
+
+## Principle
+
+Yes: `.pptx` export is supported.
+
+The default export should be **pixel-faithful**, not a rough rebuilt PowerPoint approximation.
+
+Best reliable method:
+
+1. Finalize and verify the browser HTML deck first.
+2. Render every slide at `1920 × 1080`.
+3. Create a widescreen `.pptx` with one full-bleed rendered slide image per PowerPoint slide.
+4. Deliver the `.pptx` as a downloadable PowerPoint file.
+
+This preserves the exact look of the approved web/PDF deck after opening or importing into PowerPoint, Keynote, or Google Slides.
+
+## Important expectation
+
+PowerPoint cannot reliably reproduce complex HTML/CSS layouts, custom web fonts, masks, blend modes, browser animations, and responsive positioning as editable native shapes.
+
+So the primary `.pptx` export is:
+
+```txt
+pixel-faithful PowerPoint slides, full-bleed image per slide
+```
+
+This is the correct default when the user says it should look exactly like web/PDF.
+
+If the user explicitly asks for editable PowerPoint objects, explain the tradeoff:
+
+- editable PPTX = easier to modify, but may not match exactly
+- pixel-faithful PPTX = matches the web/PDF exactly, but slide content is flattened
+
+Default to pixel-faithful unless the user explicitly prioritizes editability.
+
+## Helper
+
+Preferred helper:
+
+```bash
+python ~/.hermes/skills/creative/beautiful-presentations/scripts/export_pptx.py deck.html exports/deck.pptx
+```
+
+The helper:
+
+- opens the HTML deck with Playwright/Chromium
+- captures each slide at 1920×1080
+- creates a valid 16:9 `.pptx`
+- places each rendered PNG full-bleed on its matching slide
+- validates the PowerPoint package structure
+
+## Verification
+
+Before delivery:
+
+```bash
+python ~/.hermes/skills/creative/beautiful-presentations/scripts/export_pptx.py deck.html exports/deck.pptx
+python - <<'PY'
+from pathlib import Path
+import zipfile
+p=Path('exports/deck.pptx')
+print('exists', p.exists())
+print('bytes', p.stat().st_size if p.exists() else 0)
+with zipfile.ZipFile(p) as z:
+    slides=[n for n in z.namelist() if n.startswith('ppt/slides/slide') and n.endswith('.xml')]
+    images=[n for n in z.namelist() if n.startswith('ppt/media/image') and n.endswith('.png')]
+    print('slides', len(slides))
+    print('images', len(images))
+PY
+```
+
+Minimum pass:
+
+- file exists
+- file size > 0
+- zip opens
+- slide count matches HTML slide count
+- image count matches slide count
+- `ppt/presentation.xml` exists
+- `ppt/slides/slide1.xml` exists
+
+If available, also open the PPTX in LibreOffice/PowerPoint and export/check a preview PDF.
+
+## Final response
+
+For Telegram/client delivery:
+
+```txt
+PowerPoint exported and verified.
+MEDIA:/absolute/path/exports/Project_Name_Deck.pptx
+```
+
+Mention only if relevant:
+
+```txt
+This is a pixel-faithful PPTX, so it visually matches the web/PDF. Slide contents are flattened to preserve the design exactly.
+```
+
+```
+
+
 # File: `references/portable-sharing-checklist.md`
 
 ```markdown
@@ -1072,6 +1220,7 @@ Run these after install or edits:
 chmod +x ~/.hermes/skills/creative/beautiful-presentations/scripts/*.py
 python -m py_compile ~/.hermes/skills/creative/beautiful-presentations/scripts/*.py
 python ~/.hermes/skills/creative/beautiful-presentations/scripts/export_pdf.py --help
+python ~/.hermes/skills/creative/beautiful-presentations/scripts/export_pptx.py --help
 python ~/.hermes/skills/creative/beautiful-presentations/scripts/export_video.py --help
 python ~/.hermes/skills/creative/beautiful-presentations/scripts/extract_pptx.py --help
 python ~/.hermes/skills/creative/beautiful-presentations/scripts/setup_presentations_repos.py --help
@@ -3646,6 +3795,243 @@ def main() -> int:
         file=sys.stderr,
     )
     return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
+```
+
+
+# File: `scripts/export_pptx.py`
+
+```python
+#!/usr/bin/env python3
+"""Export a Beautiful Presentations HTML deck to a PowerPoint .pptx.
+
+This creates a pixel-faithful PPTX by rendering each HTML slide at 1920x1080
+and placing each screenshot full-bleed on a 16:9 PowerPoint slide. The result
+should visually match the reviewed web/PDF deck after opening/importing in
+PowerPoint, Keynote, or Google Slides.
+
+Usage:
+    python export_pptx.py deck.html exports/deck.pptx
+"""
+from __future__ import annotations
+
+import argparse
+import html
+import shutil
+import sys
+import tempfile
+import zipfile
+from pathlib import Path
+from typing import Iterable
+
+EMU_W = 12192000  # 13.333333in * 914400
+EMU_H = 6858000   # 7.5in * 914400
+
+
+def capture_frames(html_path: Path, frames_dir: Path) -> int:
+    try:
+        from playwright.sync_api import sync_playwright  # type: ignore
+    except Exception as exc:
+        raise RuntimeError(f"Playwright is required for PPTX export: {exc}") from exc
+
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    for old in frames_dir.glob("slide_*.png"):
+        old.unlink()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 1920, "height": 1080}, device_scale_factor=1)
+        page.goto(html_path.resolve().as_uri(), wait_until="networkidle")
+        page.wait_for_timeout(350)
+
+        slide_count = page.evaluate(
+            """
+            () => {
+              const stage = document.querySelector('deck-stage');
+              if (stage && typeof stage.length === 'number') return stage.length;
+              const slides = document.querySelectorAll('.slide');
+              if (slides.length) return slides.length;
+              const sections = document.querySelectorAll('deck-stage > section');
+              if (sections.length) return sections.length;
+              return 0;
+            }
+            """
+        )
+        if not slide_count or slide_count <= 0:
+            raise RuntimeError("No slides found. Expected .slide elements or <deck-stage> sections.")
+
+        for index in range(int(slide_count)):
+            page.evaluate(
+                """
+                (i) => {
+                  const stage = document.querySelector('deck-stage');
+                  if (stage && typeof stage.goTo === 'function') { stage.goTo(i); return; }
+                  if (window.deck && typeof window.deck.show === 'function') { window.deck.show(i); return; }
+                  if (typeof window.show === 'function') { window.show(i); return; }
+                  const slides = Array.from(document.querySelectorAll('.slide'));
+                  if (slides.length) {
+                    slides.forEach((slide, idx) => {
+                      slide.classList.toggle('active', idx === i);
+                      slide.classList.toggle('visible', idx === i);
+                      slide.style.visibility = idx === i ? 'visible' : 'hidden';
+                      slide.style.opacity = idx === i ? '1' : '0';
+                      slide.style.pointerEvents = idx === i ? 'auto' : 'none';
+                    });
+                  }
+                }
+                """,
+                index,
+            )
+            page.wait_for_timeout(220)
+            page.screenshot(path=str(frames_dir / f"slide_{index + 1:03d}.png"), full_page=False)
+        browser.close()
+    return int(slide_count)
+
+
+def write(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def slide_xml(n: int) -> str:
+    return f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+  <p:cSld>
+    <p:spTree>
+      <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
+      <p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr>
+      <p:pic>
+        <p:nvPicPr><p:cNvPr id="2" name="Slide {n} render"/><p:cNvPicPr><a:picLocks noChangeAspect="1"/></p:cNvPicPr><p:nvPr/></p:nvPicPr>
+        <p:blipFill><a:blip r:embed="rId1"/><a:stretch><a:fillRect/></a:stretch></p:blipFill>
+        <p:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{EMU_W}" cy="{EMU_H}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></p:spPr>
+      </p:pic>
+    </p:spTree>
+  </p:cSld>
+  <p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr>
+</p:sld>'''
+
+
+def rels_xml(rels: Iterable[tuple[str, str, str]]) -> str:
+    body = "".join(
+        f'<Relationship Id="{html.escape(rid)}" Type="{html.escape(rtype)}" Target="{html.escape(target)}"/>'
+        for rid, rtype, target in rels
+    )
+    return f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">{body}</Relationships>'''
+
+
+def build_pptx(frames_dir: Path, slide_count: int, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory() as tmp_name:
+        tmp = Path(tmp_name)
+        # Root rels and content types.
+        write(tmp / "_rels/.rels", rels_xml([
+            ("rId1", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument", "ppt/presentation.xml"),
+        ]))
+        overrides = [
+            '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>',
+            '<Default Extension="xml" ContentType="application/xml"/>',
+            '<Default Extension="png" ContentType="image/png"/>',
+            '<Override PartName="/ppt/presentation.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml"/>',
+            '<Override PartName="/ppt/slideMasters/slideMaster1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml"/>',
+            '<Override PartName="/ppt/slideLayouts/slideLayout1.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml"/>',
+            '<Override PartName="/ppt/theme/theme1.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/>',
+            '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>',
+            '<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>',
+        ]
+        for i in range(1, slide_count + 1):
+            overrides.append(f'<Override PartName="/ppt/slides/slide{i}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>')
+        write(tmp / "[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' + "".join(overrides) + '</Types>')
+
+        # Presentation and rels.
+        slide_ids = "".join(f'<p:sldId id="{255+i}" r:id="rId{i}"/>' for i in range(1, slide_count + 1))
+        write(tmp / "ppt/presentation.xml", f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:presentation xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+  <p:sldMasterIdLst><p:sldMasterId id="2147483648" r:id="rId{slide_count+1}"/></p:sldMasterIdLst>
+  <p:sldIdLst>{slide_ids}</p:sldIdLst>
+  <p:sldSz cx="{EMU_W}" cy="{EMU_H}" type="wide"/>
+  <p:notesSz cx="6858000" cy="9144000"/>
+</p:presentation>''')
+        pres_rels = [(f"rId{i}", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide", f"slides/slide{i}.xml") for i in range(1, slide_count + 1)]
+        pres_rels.append((f"rId{slide_count+1}", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster", "slideMasters/slideMaster1.xml"))
+        pres_rels.append((f"rId{slide_count+2}", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme", "theme/theme1.xml"))
+        write(tmp / "ppt/_rels/presentation.xml.rels", rels_xml(pres_rels))
+
+        # Minimal master/layout/theme.
+        write(tmp / "ppt/slideMasters/slideMaster1.xml", f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld><p:sldLayoutIdLst><p:sldLayoutId id="1" r:id="rId1"/></p:sldLayoutIdLst><p:txStyles><p:titleStyle/><p:bodyStyle/><p:otherStyle/></p:txStyles></p:sldMaster>''')
+        write(tmp / "ppt/slideMasters/_rels/slideMaster1.xml.rels", rels_xml([
+            ("rId1", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout", "../slideLayouts/slideLayout1.xml"),
+        ]))
+        write(tmp / "ppt/slideLayouts/slideLayout1.xml", '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank" preserve="1"><p:cSld name="Blank"><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr></p:spTree></p:cSld></p:sldLayout>''')
+        write(tmp / "ppt/slideLayouts/_rels/slideLayout1.xml.rels", rels_xml([
+            ("rId1", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster", "../slideMasters/slideMaster1.xml"),
+        ]))
+        write(tmp / "ppt/theme/theme1.xml", '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="Beautiful Presentations"><a:themeElements><a:clrScheme name="Default"><a:dk1><a:srgbClr val="000000"/></a:dk1><a:lt1><a:srgbClr val="FFFFFF"/></a:lt1><a:dk2><a:srgbClr val="1F1F1F"/></a:dk2><a:lt2><a:srgbClr val="F2F2F2"/></a:lt2><a:accent1><a:srgbClr val="000000"/></a:accent1><a:accent2><a:srgbClr val="FFFFFF"/></a:accent2><a:accent3><a:srgbClr val="808080"/></a:accent3><a:accent4><a:srgbClr val="C0C0C0"/></a:accent4><a:accent5><a:srgbClr val="404040"/></a:accent5><a:accent6><a:srgbClr val="E0E0E0"/></a:accent6><a:hlink><a:srgbClr val="0000FF"/></a:hlink><a:folHlink><a:srgbClr val="800080"/></a:folHlink></a:clrScheme><a:fontScheme name="Default"><a:majorFont><a:latin typeface="Arial"/></a:majorFont><a:minorFont><a:latin typeface="Arial"/></a:minorFont></a:fontScheme><a:fmtScheme name="Default"><a:fillStyleLst><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:fillStyleLst><a:lnStyleLst><a:ln w="9525"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:ln></a:lnStyleLst><a:effectStyleLst><a:effectStyle><a:effectLst/></a:effectStyle></a:effectStyleLst><a:bgFillStyleLst><a:solidFill><a:schemeClr val="phClr"/></a:solidFill></a:bgFillStyleLst></a:fmtScheme></a:themeElements></a:theme>''')
+        write(tmp / "docProps/app.xml", f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><Application>Hermes Beautiful Presentations</Application><PresentationFormat>Widescreen</PresentationFormat><Slides>{slide_count}</Slides></Properties>''')
+        write(tmp / "docProps/core.xml", '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:creator>Hermes Beautiful Presentations</dc:creator><dc:title>Exported HTML deck</dc:title></cp:coreProperties>''')
+
+        media = tmp / "ppt/media"
+        media.mkdir(parents=True, exist_ok=True)
+        for i in range(1, slide_count + 1):
+            src = frames_dir / f"slide_{i:03d}.png"
+            if not src.exists() or src.stat().st_size <= 0:
+                raise RuntimeError(f"Missing rendered frame: {src}")
+            shutil.copy2(src, media / f"image{i}.png")
+            write(tmp / f"ppt/slides/slide{i}.xml", slide_xml(i))
+            write(tmp / f"ppt/slides/_rels/slide{i}.xml.rels", rels_xml([
+                ("rId1", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image", f"../media/image{i}.png"),
+                ("rId2", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout", "../slideLayouts/slideLayout1.xml"),
+            ]))
+
+        with zipfile.ZipFile(output_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for file in sorted(tmp.rglob("*")):
+                if file.is_file():
+                    zf.write(file, file.relative_to(tmp).as_posix())
+
+    if not output_path.exists() or output_path.stat().st_size <= 0:
+        raise RuntimeError(f"PPTX was not created or is empty: {output_path}")
+    with zipfile.ZipFile(output_path, "r") as zf:
+        names = set(zf.namelist())
+        required = {"[Content_Types].xml", "ppt/presentation.xml", "ppt/slides/slide1.xml", "ppt/media/image1.png"}
+        missing = required - names
+        if missing:
+            raise RuntimeError(f"PPTX validation failed; missing parts: {sorted(missing)}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Export an HTML deck to a pixel-faithful PowerPoint .pptx.")
+    parser.add_argument("html", help="Input deck.html")
+    parser.add_argument("pptx", help="Output deck.pptx")
+    parser.add_argument("--frames-dir", help="Optional rendered PNG frames directory")
+    args = parser.parse_args()
+
+    html_path = Path(args.html).expanduser().resolve()
+    output_path = Path(args.pptx).expanduser().resolve()
+    frames_dir = Path(args.frames_dir).expanduser().resolve() if args.frames_dir else output_path.parent / "pptx_frames"
+
+    if not html_path.exists():
+        print(f"ERROR: HTML file not found: {html_path}", file=sys.stderr)
+        return 2
+    if output_path.suffix.lower() != ".pptx":
+        print(f"ERROR: output must end in .pptx: {output_path}", file=sys.stderr)
+        return 2
+
+    try:
+        slide_count = capture_frames(html_path, frames_dir)
+        build_pptx(frames_dir, slide_count, output_path)
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+    print(f"Exported {slide_count} slides to PowerPoint: {output_path}")
+    return 0
 
 
 if __name__ == "__main__":
