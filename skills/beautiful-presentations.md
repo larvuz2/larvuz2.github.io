@@ -1,6 +1,6 @@
 # Beautiful Presentations Skill — Portable Public Reader
 
-Updated: 2026-06-05T19:37:34.097225+00:00
+Updated: 2026-06-05T19:38:51.167603+00:00
 
 Public reader URL:
 
@@ -619,6 +619,22 @@ The deck is done when:
 # Portable Sharing Checklist
 
 Use this before sharing the `beautiful-presentations` skill with another Hermes agent/profile/VPS.
+
+## Public reader URL
+
+When sharing with another agent, lead with this URL:
+
+```txt
+https://larvuz2.github.io/skills/beautiful-presentations.md
+```
+
+That public Markdown file contains the consolidated instructions, key references, base template, and helper scripts so another agent can read and understand the workflow before installing anything.
+
+Full install package:
+
+```txt
+https://larvuz2.github.io/skills/beautiful-presentations-skill.tar.gz
+```
 
 ## What must be included
 
