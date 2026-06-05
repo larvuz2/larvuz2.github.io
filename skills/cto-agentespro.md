@@ -1,20 +1,14 @@
 # CTO-agentespro — Portable Public Reader
 
-Updated: 2026-06-05T22:45:24.333786+00:00
+Updated: 2026-06-05T23:03:15.520578+00:00
 
-Install package:
+## FIRST INSTRUCTION FOR ANY HERMES AGENT READING THIS
 
-```txt
-https://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz
-```
 
-Paste this reader URL to another Hermes agent:
+If the user pasted this URL and asked to install CTO-agentespro, do **not** install this Markdown reader as the final skill. This reader is the bootstrap instruction file. Install the full package below because the complete team requires linked scripts, templates, references, and generated profiles.
 
-```txt
-https://larvuz2.github.io/skills/cto-agentespro.md
-```
 
-## One-command install
+Run this command now in the target Hermes environment:
 
 ```bash
 set -euo pipefail
@@ -23,6 +17,30 @@ rm -rf /tmp/cto-agentespro
 mkdir -p /tmp/cto-agentespro
 tar -xzf /tmp/cto-agentespro-skill.tar.gz -C /tmp/cto-agentespro
 python3 /tmp/cto-agentespro/cto-agentespro/scripts/install_cto_agentespro.py --target-profile default --create-team-profiles
+```
+
+
+After install, start a fresh Hermes session or run `/reload-skills`, then load/use `cto-agentespro`.
+
+
+## Simple user instruction
+
+Paste only this URL into another Hermes agent and say: `install this CTO software team`.
+
+```txt
+https://larvuz2.github.io/skills/cto-agentespro.md
+```
+
+
+## Why the tarball is necessary
+
+`hermes skills install <url>` can install a single Markdown skill, but CTO-agentespro is a full software-team distribution. The tarball includes the skill plus scripts, templates, references, and profile generation. A single `.md` install would lose those supporting files.
+
+
+## Full package URL
+
+```txt
+https://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz
 ```
 
 ## Core rule
@@ -1311,9 +1329,13 @@ def build_reader(skill: Path) -> str:
     parts: list[str] = []
     parts.append("# CTO-agentespro — Portable Public Reader\n")
     parts.append(f"Updated: {datetime.now(timezone.utc).isoformat()}\n")
-    parts.append("Install package:\n\n```txt\nhttps://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz\n```\n")
-    parts.append("Paste this reader URL to another Hermes agent:\n\n```txt\nhttps://larvuz2.github.io/skills/cto-agentespro.md\n```\n")
-    parts.append("## One-command install\n\n```bash\nset -euo pipefail\ncurl -fL https://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz -o /tmp/cto-agentespro-skill.tar.gz\nrm -rf /tmp/cto-agentespro\nmkdir -p /tmp/cto-agentespro\ntar -xzf /tmp/cto-agentespro-skill.tar.gz -C /tmp/cto-agentespro\npython3 /tmp/cto-agentespro/cto-agentespro/scripts/install_cto_agentespro.py --target-profile default --create-team-profiles\n```\n")
+    parts.append("## FIRST INSTRUCTION FOR ANY HERMES AGENT READING THIS\n\n")
+    parts.append("If the user pasted this URL and asked to install CTO-agentespro, do **not** install this Markdown reader as the final skill. This reader is the bootstrap instruction file. Install the full package below because the complete team requires linked scripts, templates, references, and generated profiles.\n\n")
+    parts.append("Run this command now in the target Hermes environment:\n\n```bash\nset -euo pipefail\ncurl -fL https://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz -o /tmp/cto-agentespro-skill.tar.gz\nrm -rf /tmp/cto-agentespro\nmkdir -p /tmp/cto-agentespro\ntar -xzf /tmp/cto-agentespro-skill.tar.gz -C /tmp/cto-agentespro\npython3 /tmp/cto-agentespro/cto-agentespro/scripts/install_cto_agentespro.py --target-profile default --create-team-profiles\n```\n\n")
+    parts.append("After install, start a fresh Hermes session or run `/reload-skills`, then load/use `cto-agentespro`.\n\n")
+    parts.append("## Simple user instruction\n\nPaste only this URL into another Hermes agent and say: `install this CTO software team`.\n\n```txt\nhttps://larvuz2.github.io/skills/cto-agentespro.md\n```\n\n")
+    parts.append("## Why the tarball is necessary\n\n`hermes skills install <url>` can install a single Markdown skill, but CTO-agentespro is a full software-team distribution. The tarball includes the skill plus scripts, templates, references, and profile generation. A single `.md` install would lose those supporting files.\n\n")
+    parts.append("## Full package URL\n\n```txt\nhttps://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz\n```\n")
     parts.append("## Core rule\n\nOne umbrella skill: `CTO-agentespro`. Builder, Reviewer, QA, and DevOps are internal roles/profiles, not separate top-level skills. Default coordination is Hermes Kanban + GitHub + repo context files. Jira is optional, not default.\n")
     parts.append("\n---\n\n")
 
