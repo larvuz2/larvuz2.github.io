@@ -1,11 +1,11 @@
 # CTO-agentespro — Portable Public Reader
 
-Updated: 2026-06-05T23:03:15.520578+00:00
+Updated: 2026-06-06T06:38:24.029113+00:00
 
 ## FIRST INSTRUCTION FOR ANY HERMES AGENT READING THIS
 
 
-If the user pasted this URL and asked to install CTO-agentespro, do **not** install this Markdown reader as the final skill. This reader is the bootstrap instruction file. Install the full package below because the complete team requires linked scripts, templates, references, and generated profiles.
+If the user pasted this URL and asked to install CTO-agentespro, do **not** install this Markdown reader as the final skill. This reader is the bootstrap instruction file. Install the full package below because the complete software team requires linked scripts, templates, references, and generated profiles.
 
 
 Run this command now in the target Hermes environment:
@@ -30,11 +30,6 @@ Paste only this URL into another Hermes agent and say: `install this CTO softwar
 ```txt
 https://larvuz2.github.io/skills/cto-agentespro.md
 ```
-
-
-## Why the tarball is necessary
-
-`hermes skills install <url>` can install a single Markdown skill, but CTO-agentespro is a full software-team distribution. The tarball includes the skill plus scripts, templates, references, and profile generation. A single `.md` install would lose those supporting files.
 
 
 ## Full package URL
@@ -103,6 +98,40 @@ Do not ask for Jira. Jira is optional. Default is Hermes Kanban.
 
 If Kanban tools are unavailable in the current session, maintain a lightweight task board in the response or in `.hermes/project-brief.md` until Kanban is available. Do not fall back to Jira by default.
 
+## Fast company team pass
+
+For **agentesPRO/company software or website changes**, CTO-agentespro should be involved by default, even when the task is easy. Speed is preserved by using the smallest useful team shape, not by bypassing the company team.
+
+Default fast pass:
+
+```txt
+Larvuz / Chief of Staff routes
+↓
+CTO-agentespro owns technical scope + implementation path
+CMO/MKT-agentespro owns copy, positioning, and conversion when the change touches a landing page, pricing page, public website, or sales surface
+↓
+Builder or Larvuz implements the scoped change
+↓
+QA-agentespro verifies the artifact
+↓
+Larvuz reports the result to Gus
+```
+
+Run CTO and CMO/MKT passes in parallel when possible. A tiny one-file edit does not require a heavy Kanban ceremony, but it still needs explicit CTO ownership and CMO/MKT input when copy/conversion is involved. Only skip the team pass if Gus explicitly asks for solo execution or a hard blocker makes delegation unavailable.
+
+## Reporting fabric
+
+CTO-agentespro reports upward to **Larvuz / Chief-of-Staff-agentesPRO** for company-level routing and directly to **Gus** for final decisions.
+
+The CTO software execution team reports to CTO-agentespro:
+
+- **Builder-agentespro**
+- **Reviewer-agentespro**
+- **QA-agentespro**
+- **DevOps-agentespro**
+
+These specialist profiles do **not** own product direction, cross-department strategy, final merge/deploy decisions, or marketing direction. They execute CTO-assigned tasks, CTO-created Kanban cards, or direct requests from Gus/Larvuz that are clearly inside their lane. If a task arrives outside their lane, they hand it back to CTO-agentespro or Larvuz for routing.
+
 ## Team roles
 
 The default software team is:
@@ -141,11 +170,13 @@ Bad delegation:
 
 For multi-step software tasks:
 
-1. Create a Kanban task for the parent objective.
-2. Break it into child tasks by role.
-3. Mark blockers clearly.
-4. Keep only one active task per agent profile unless the user asks for more concurrency.
-5. Update status when tasks are completed, blocked, or need human decision.
+1. Create a Kanban task for each executable unit, not just a ceremonial umbrella card.
+2. Break work into child tasks by role.
+3. Use dependencies as real prerequisites: `Content/SEO → Builder → QA`, not `Umbrella parent → all children` unless the umbrella will complete before children need to run.
+4. Only force-load skills that exist in the assigned profile. Do not assign a `cto-agentespro` worker a card with `--skill mkt-agentespro`; create a separate `mkt-agentespro` card and link its output as the Builder parent/context.
+5. Keep only one active task per agent profile unless the user asks for more concurrency.
+6. Archive superseded duplicate cards instead of leaving them blocked in the flow.
+7. Update status when tasks are completed, blocked, or need human decision.
 
 Use simple states:
 
@@ -239,15 +270,22 @@ For status:
 Done
 - what changed
 - tests/builds run
-- PR/deploy link
+- GitHub push/PR/deploy status
+- clickable URL to the artifact/page/app that was just built
 - blockers or human decision needed
 ```
+
+For software/site builds, the final answer should include a clickable artifact URL whenever one exists. Use clean public URLs by default: prefer `/blog`, `/pricing`, `/dashboard`, etc. over `.html` routes. If the repo is already connected to GitHub + Netlify/GitHub Pages and Gus asked for a public website change, push the verified change so the hosting pipeline can deploy automatically, unless an explicit approval boundary blocks it.
 
 ## Portable distribution
 
 When the user asks to share, install, copy, publish, or reuse this software-team skill on another Hermes VPS/profile, package the skill as both a public Markdown reader and a tarball with an install script, then verify download, extraction, installation, and model-agnostic behavior before saying it is ready.
 
-Use `scripts/package_skill.py` to build reproducible distribution artifacts.
+**Simple install UX rule:** the user should only need to paste the public Markdown reader URL into another Hermes agent and say `install this CTO software team`. The reader must start with a clear bootstrap instruction for the receiving agent. Do **not** make the user paste the tarball command unless they explicitly want terminal install.
+
+**Why:** `hermes skills install <url>` can install a single Markdown skill, but CTO-agentespro is a full software-team distribution. The tarball remains necessary because it carries linked scripts, templates, references, and generated team profile setup. The Markdown reader is the agent-facing bootstrap file; the tarball is the real package.
+
+Use `scripts/package_skill.py` to build reproducible distribution artifacts. Ensure the generated reader begins with a "FIRST INSTRUCTION" section that tells the target Hermes agent to download/extract the tarball and run `install_cto_agentespro.py --target-profile default --create-team-profiles`.
 
 Use `scripts/init_repo_context.py` inside target repos to create `AGENTS.md` and an optional `.hermes/project-brief.md`.
 
@@ -263,6 +301,7 @@ Use `scripts/start_cto_project.py` to create a real Kanban board and initial CTO
 - `references/safety-and-human-approval.md`
 - `references/portable-team-skill-distribution.md`
 - `references/kanban-project-launch.md`
+- `references/kanban-project-launcher-build-notes.md`
 - `scripts/install_cto_agentespro.py`
 - `scripts/init_repo_context.py`
 - `scripts/start_cto_project.py`
@@ -467,6 +506,58 @@ It avoids spawning every profile at once before scope exists.
 It keeps expensive implementation blocked until acceptance criteria are clear.
 It creates a visible Kanban cockpit immediately.
 
+```
+
+---
+
+
+# File: `references/kanban-project-launcher-build-notes.md`
+
+```markdown
+# Kanban Project Launcher Build Notes
+
+Use these notes when evolving CTO-agentespro or building a similar plug-and-play Hermes software team skill.
+
+## Durable pattern
+
+A software-team skill should not stop at docs + profile prompts. Make it operational:
+
+1. Install one umbrella skill.
+2. Create/update specialist Hermes profiles.
+3. Bootstrap repo context files (`AGENTS.md`, `.hermes/project-brief.md`).
+4. Create a real Hermes Kanban board from the user's objective.
+5. Seed a staged task graph:
+   - CTO plan / scope first
+   - Builder implementation blocked until scope is clear
+   - Reviewer blocked until Builder output exists
+   - QA blocked until implementation is testable
+   - DevOps blocked until deploy/CI/DB work is relevant
+6. Run `hermes kanban dispatch --dry-run` before real dispatch.
+7. Keep human approval for merge, production deploy, destructive DB migration, and repo deletion.
+
+## Launcher script behavior
+
+A good `start_cto_project.py` should:
+
+- call `hermes kanban init`
+- create or reuse a board, then switch to it
+- set board default workdir when a repo path is provided
+- create idempotent cards with `--idempotency-key`
+- assign specialist profiles explicitly
+- attach the umbrella skill with `--skill cto-agentespro`
+- default expensive/ambiguous worker cards to `blocked`
+- print watch and dispatch commands at the end
+
+## Installer pitfalls fixed
+
+- `hermes profile describe` requires `--text` for non-interactive description updates.
+- When creating profiles under a target Hermes home, pass `HERMES_HOME` into the subprocess environment; otherwise profile commands may affect the wrong home.
+- Avoid deleting the source when installing from an already-installed skill path; detect same source/destination and skip or require `--force` safely.
+- Package artifacts should be deterministic and rebuilt by script, not hand-copied.
+
+## Why staged Kanban beats spawning everyone
+
+Do not dispatch Builder/Reviewer/QA/DevOps all at once. Scope must harden first. The staged board gives the user an instant cockpit while preventing token waste and confused work.
 ```
 
 ---
@@ -723,6 +814,26 @@ If secret-looking material appears in files or output, redact it as `[REDACTED]`
 One umbrella: `CTO-agentespro`.
 
 The roles are profiles/prompts under the umbrella, not separate top-level skills.
+
+## Reporting fabric
+
+```txt
+Gus
+↓
+Larvuz / Chief-of-Staff-agentesPRO
+↓
+CTO-agentespro
+├─ Builder-agentespro
+├─ Reviewer-agentespro
+├─ QA-agentespro
+└─ DevOps-agentespro
+```
+
+- CTO-agentespro owns technical direction, task decomposition, integration, and verification.
+- Builder, Reviewer, QA, and DevOps report to CTO-agentespro.
+- Specialist agents execute CTO-assigned work or CTO-created Kanban cards.
+- Specialist agents may report blockers and recommendations, but do not own product direction or final merge/deploy decisions.
+- Technical specialists do not route marketing, brand, SEO, social, growth, or campaign work; they hand it back to Larvuz/Chief-of-Staff or CMO/MKT.
 
 ## Minimal default team
 
@@ -1330,11 +1441,10 @@ def build_reader(skill: Path) -> str:
     parts.append("# CTO-agentespro — Portable Public Reader\n")
     parts.append(f"Updated: {datetime.now(timezone.utc).isoformat()}\n")
     parts.append("## FIRST INSTRUCTION FOR ANY HERMES AGENT READING THIS\n\n")
-    parts.append("If the user pasted this URL and asked to install CTO-agentespro, do **not** install this Markdown reader as the final skill. This reader is the bootstrap instruction file. Install the full package below because the complete team requires linked scripts, templates, references, and generated profiles.\n\n")
+    parts.append("If the user pasted this URL and asked to install CTO-agentespro, do **not** install this Markdown reader as the final skill. This reader is the bootstrap instruction file. Install the full package below because the complete software team requires linked scripts, templates, references, and generated profiles.\n\n")
     parts.append("Run this command now in the target Hermes environment:\n\n```bash\nset -euo pipefail\ncurl -fL https://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz -o /tmp/cto-agentespro-skill.tar.gz\nrm -rf /tmp/cto-agentespro\nmkdir -p /tmp/cto-agentespro\ntar -xzf /tmp/cto-agentespro-skill.tar.gz -C /tmp/cto-agentespro\npython3 /tmp/cto-agentespro/cto-agentespro/scripts/install_cto_agentespro.py --target-profile default --create-team-profiles\n```\n\n")
     parts.append("After install, start a fresh Hermes session or run `/reload-skills`, then load/use `cto-agentespro`.\n\n")
     parts.append("## Simple user instruction\n\nPaste only this URL into another Hermes agent and say: `install this CTO software team`.\n\n```txt\nhttps://larvuz2.github.io/skills/cto-agentespro.md\n```\n\n")
-    parts.append("## Why the tarball is necessary\n\n`hermes skills install <url>` can install a single Markdown skill, but CTO-agentespro is a full software-team distribution. The tarball includes the skill plus scripts, templates, references, and profile generation. A single `.md` install would lose those supporting files.\n\n")
     parts.append("## Full package URL\n\n```txt\nhttps://larvuz2.github.io/skills/cto-agentespro-skill.tar.gz\n```\n")
     parts.append("## Core rule\n\nOne umbrella skill: `CTO-agentespro`. Builder, Reviewer, QA, and DevOps are internal roles/profiles, not separate top-level skills. Default coordination is Hermes Kanban + GitHub + repo context files. Jira is optional, not default.\n")
     parts.append("\n---\n\n")

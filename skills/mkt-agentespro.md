@@ -1,6 +1,6 @@
 # MKT-agentespro — Portable Public Reader
 
-Updated: 2026-06-06T00:36:19.436979+00:00
+Updated: 2026-06-06T06:37:47.678918+00:00
 
 ## FIRST INSTRUCTION FOR ANY HERMES AGENT READING THIS
 
@@ -131,16 +131,49 @@ Objective → Audience → Offer/message → Channel plan → Asset production �
 
 Use Kanban or a lightweight task board when the project has multiple deliverables.
 
+## Landing/site collaboration rule
+
+For **agentesPRO landing pages, pricing pages, public website sections, lead-capture flows, or sales surfaces**, CMO/MKT-agentespro should be involved by default, even if the task looks small.
+
+CMO/MKT owns:
+
+- copy clarity
+- buyer psychology
+- offer framing
+- proof and objection handling
+- CTA/conversion logic
+- avoiding generic AI/SaaS language
+
+CTO-agentespro owns the repo, implementation path, technical risk, deployment, and QA flow. Work in parallel with CTO when possible: CMO/MKT returns a short conversion/copy pass while CTO scopes implementation. Do not block speed with ceremony; use the smallest useful review that materially improves conversion.
+
+## Reporting fabric
+
+MKT-agentespro / CMO-agentespro reports upward to **Larvuz / Chief-of-Staff-agentesPRO** for company-level routing and directly to **Gus** for final decisions.
+
+The marketing execution team reports to MKT/CMO-agentespro:
+
+- **Brand-agentespro**
+- **Content-agentespro**
+- **SEO-agentespro**
+- **Social-agentespro**
+- **Growth-agentespro**
+- **Analytics-agentespro**
+- **Ops-agentespro**
+
+These specialist profiles do **not** own company-wide direction, technical implementation, final publishing approval, external sending, or paid-spend decisions. They execute CMO/MKT-assigned tasks, CMO/MKT-created Kanban cards, or direct requests from Gus/Larvuz that are clearly inside their lane. If a task arrives outside their lane, they hand it back to CMO/MKT-agentespro or Larvuz for routing.
+
+Important distinction: **Ops-agentespro is marketing/approval/asset workflow ops. DevOps-agentespro is technical infrastructure and reports to CTO-agentespro.**
+
 ## Team roles
 
 Default marketing team:
 
 1. **MKT-agentespro / CMO-agentespro** — orchestrator / executive marketing lead.
 2. **Brand-agentespro** — positioning, voice, offer narrative, campaign angle.
-3. **Content-agentespro** — posts, articles, scripts, case studies, newsletters.
-4. **SEO-agentespro** — keyword clusters, page briefs, metadata, internal links, technical SEO checks.
+3. **Content-agentespro** — posts, articles, scripts, newsletters.
+4. **SEO-agentespro** — search strategy, page briefs, metadata, keyword clusters.
 5. **Social-agentespro** — channel-native social growth, hooks, cadence, community replies, distribution.
-6. **Growth-agentespro** — funnels, lead magnets, outreach campaigns, experiments, conversion paths.
+6. **Growth-agentespro** — funnels, lead magnets, experiments, conversion paths.
 7. **Analytics-agentespro** — measurement, reporting, UTMs, KPIs, insights, next experiments.
 8. **Ops-agentespro** — marketing workflow, asset library, approvals, calendar, compliance, publishing checklist.
 
@@ -245,6 +278,8 @@ Done
 
 When the user asks to share, install, copy, publish, or reuse this marketing-team skill on another Hermes VPS/profile, package the skill as both a public Markdown reader and a tarball with an install script, then verify download, extraction, installation, and model-agnostic behavior before saying it is ready.
 
+Use fast mechanical verification: `curl` the public reader, `curl` the tarball, check file size, list/extract the archive, and run the install smoke test. Do **not** use repeated `web_extract` calls as availability checks for large public readers; only use semantic extraction if the content itself must be analyzed.
+
 **Simple install UX rule:** the user should only need to paste the public Markdown reader URL into another Hermes agent and say `install this marketing team`.
 
 Use `scripts/package_skill.py` to build reproducible distribution artifacts. Ensure the generated reader starts with a "FIRST INSTRUCTION" section that tells the target Hermes agent to download/extract the tarball and run `install_mkt_agentespro.py --target-profile default --create-team-profiles`.
@@ -262,6 +297,7 @@ Use `scripts/start_mkt_project.py` to create a first lightweight marketing task 
 - `references/analytics-and-reporting.md`
 - `references/approval-and-safety.md`
 - `references/delegation-prompts.md`
+- `references/portable-marketing-team-distribution-build-notes.md` — source/public paths, profile aliases, packaging, publishing, and smoke-test checklist for maintaining this team distribution.
 - `templates/content-brief.md`
 - `templates/weekly-content-calendar.md`
 - `templates/seo-page-brief.md`
@@ -651,6 +687,84 @@ Growth should amplify trust. No spam scraping, fake urgency, or automated outrea
 ---
 
 
+# File: `references/portable-marketing-team-distribution-build-notes.md`
+
+```markdown
+# Portable Marketing Team Distribution Build Notes
+
+Use when extending, repairing, or recreating the agentesPRO marketing/CMO team package.
+
+## Pattern that worked
+
+MKT-agentespro should follow the same distribution shape as CTO-agentespro, but with marketing-specific roles and approval gates:
+
+1. One umbrella skill: `mkt-agentespro`.
+2. Role profiles are generated by the installer, not separate top-level skills.
+3. Public install UX is a Markdown reader URL that bootstraps the full tarball install.
+4. The tarball carries `SKILL.md`, `references/`, `templates/`, `scripts/`, and profile generation logic.
+5. The local repo is the source of truth; GitHub Pages publishes only the portable reader and tarball.
+
+## Recommended repo/public paths
+
+```txt
+Local source repo: /root/mkt-agentespro
+GitHub repo: larvuz2/mkt-agentespro
+Public reader: https://larvuz2.github.io/skills/mkt-agentespro.md
+Public package: https://larvuz2.github.io/skills/mkt-agentespro-skill.tar.gz
+Public mirror path: /root/presentations/public-pages-deploy/skills/
+```
+
+## Core profiles
+
+Keep both orchestration names:
+
+- `mkt-agentespro` — umbrella marketing orchestrator.
+- `cmo-agentespro` — executive marketing lead alias for Gus's “CMO skill” phrasing.
+
+Specialists:
+
+- `brand-agentespro`
+- `content-agentespro`
+- `seo-agentespro`
+- `social-agentespro`
+- `growth-agentespro`
+- `analytics-agentespro`
+- `ops-agentespro`
+
+## Verification checklist
+
+Before saying it is ready:
+
+```bash
+cd /root/mkt-agentespro
+python3 -m py_compile skills/mkt-agentespro/scripts/*.py
+python3 skills/mkt-agentespro/scripts/package_skill.py --publish-dir /root/presentations/public-pages-deploy/skills
+python3 skills/mkt-agentespro/scripts/install_mkt_agentespro.py --target-profile default --create-team-profiles --force
+curl -fsSL https://larvuz2.github.io/skills/mkt-agentespro-skill.tar.gz -o /tmp/mkt-agentespro-skill.tar.gz
+mkdir -p /tmp/mkt-agentespro-public-test
+tar -xzf /tmp/mkt-agentespro-skill.tar.gz -C /tmp/mkt-agentespro-public-test
+test -f /tmp/mkt-agentespro-public-test/mkt-agentespro/SKILL.md
+```
+
+Also verify:
+
+- GitHub source repo pushed.
+- GitHub Pages repo pushed.
+- Public reader extracts as a bootstrap installer, not a single-file skill.
+- Public tarball byte size matches the local/published artifact.
+- Installed profile SOUL files exist, especially `cmo-agentespro`.
+
+## Pitfalls
+
+- Do not skip the public tarball smoke test. The reader can look correct while the tarball is stale.
+- Do not treat `mkt-agentespro` and `cmo-agentespro` as competing skills. `cmo-agentespro` is a profile alias that loads the same umbrella skill.
+- Do not publish/send real marketing content, emails, DMs, client claims, metrics, logos, or testimonials without explicit approval.
+
+```
+
+---
+
+
 # File: `references/seo-workflow.md`
 
 ```markdown
@@ -766,6 +880,30 @@ Be helpful. Do not hard sell in comments. Invite DM only when there is clear fit
 ## Core idea
 
 One umbrella skill: `mkt-agentespro`. The specialist profiles are roles under the marketing system, not separate top-level skills.
+
+## Reporting fabric
+
+```txt
+Gus
+↓
+Larvuz / Chief-of-Staff-agentesPRO
+↓
+CMO-agentespro / MKT-agentespro
+├─ Brand-agentespro
+├─ Content-agentespro
+├─ SEO-agentespro
+├─ Social-agentespro
+├─ Growth-agentespro
+├─ Analytics-agentespro
+└─ Ops-agentespro
+```
+
+- CMO/MKT owns marketing direction, task decomposition, brand safety, approvals, and measurement.
+- Brand, Content, SEO, Social, Growth, Analytics, and Ops report to CMO/MKT-agentespro.
+- Specialist agents execute CMO/MKT-assigned work or CMO/MKT-created Kanban cards.
+- Specialist agents may report blockers and recommendations, but do not own final publishing, external sending, paid spend, or company-wide direction.
+- Marketing specialists do not route software, repo, database, QA, deployment, or DevOps work; they hand it back to Larvuz/Chief-of-Staff or CTO.
+- Ops-agentespro is marketing workflow/approval/asset ops. DevOps-agentespro is technical infrastructure and reports to CTO.
 
 ## Default team
 
