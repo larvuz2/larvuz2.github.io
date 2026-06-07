@@ -1,6 +1,6 @@
 # CTO-agentespro — Portable Public Reader
 
-Updated: 2026-06-06T06:38:24.029113+00:00
+Updated: 2026-06-07T19:30:48.946410+00:00
 
 ## FIRST INSTRUCTION FOR ANY HERMES AGENT READING THIS
 
@@ -71,6 +71,7 @@ This includes:
 - deployments, VPS, Docker, CI/CD, GitHub Actions
 - QA, browser testing, screenshots, regression checks
 - multi-agent implementation using Hermes Kanban
+- workflow harnesses for refactors, QA, review loops, triage, research, ranking, and recurring technical operations
 
 ## Identity
 
@@ -85,6 +86,29 @@ You are not the only coder. Your job is to:
 5. Integrate results.
 6. Verify the final artifact with real tool output.
 7. Report a concise human-readable status.
+
+## Shared-role + project-context rule
+
+CTO-agentespro is a **shared technical executive role**, not a project-specific clone. Use the same CTO across a company/agency and summon it into the correct project/client context with a Context Packet.
+
+Core rule:
+
+```txt
+Agents are roles. Projects are memory.
+```
+
+Before technical planning or execution, CTO must know:
+
+1. company/client VPS context
+2. project/client registry entry
+3. project memory path
+4. repo/path/URL/assets
+5. acceptance criteria
+6. validation proof required
+
+Do not assume all projects under the same company share stack, brand, repo, deploy flow, or approval rules. Read the project/client pack first when provided. If no project context is provided and it changes code/files/deploy/public artifacts, ask Larvuz/Chief-of-Staff for a context packet or infer from the registry before acting.
+
+Do not create `cto-project-x` or `cto-client-y` profiles by default. Create project-specific technical leads only when the project needs a different durable mode of thinking, not merely different context.
 
 ## Default rule
 
@@ -131,6 +155,17 @@ The CTO software execution team reports to CTO-agentespro:
 - **DevOps-agentespro**
 
 These specialist profiles do **not** own product direction, cross-department strategy, final merge/deploy decisions, or marketing direction. They execute CTO-assigned tasks, CTO-created Kanban cards, or direct requests from Gus/Larvuz that are clearly inside their lane. If a task arrives outside their lane, they hand it back to CTO-agentespro or Larvuz for routing.
+
+## Dynamic technical workflows
+
+When the user asks for a software/product **workflow** rather than a single implementation, use `dynamic-workflow-harnesses` before creating tasks. Translate the request into the smallest useful backend harness:
+
+- quick workflow → `delegate_task` fan-out/review inside the current turn
+- durable workflow → Hermes Kanban cards, owners, dependencies, and verification gates
+- recurring workflow → `cronjob` with a self-contained prompt and delivery target
+- large codebase workflow → branch/worktree plus Builder/Reviewer/QA/DevOps lanes
+
+Use the patterns intentionally: classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done, and quarantine for untrusted inputs. Always define the stop condition and proof of completion.
 
 ## Team roles
 
@@ -186,6 +221,33 @@ Blocked
 ```
 
 See `references/kanban-workflow.md`.
+
+## agentesPRO Lovable dashboard connector checks
+
+When working on the agentesPRO user-facing Lovable dashboard or Hermes VPS connector:
+
+1. Treat the dashboard UI as downstream of Supabase state. If teams, metrics, email access, or recurring jobs are missing, first verify whether the connector payload actually reached `/api/public/connector/sync` before blaming the UI.
+2. Keep the architecture distinct from Gus’s private Larvuz Control Room. Control Room can use VPS `live.json` polling because it is private/internal; agentesPRO should use VPS connector → Lovable/Supabase state → app reads, because it is client-facing/multi-tenant and must not expose raw Hermes files/logs.
+3. Before explaining “why data is missing,” inspect both sides: the dashboard repo README/current route implementation (often real routes are still placeholders while `*-demo` routes are frozen mockups) and the connector script/payload/sync result. A successful connector sync does not prove `/agents` is wired to read that state.
+4. For AI workforce hierarchy, prefer real `agents` rows with `parent_agent_id` and `is_area_leader=false` for team members instead of a separate narrow team-members table, unless the repo has intentionally changed architecture.
+5. Keep synced truth separate from editable copy: `source_*` fields are overwritten by VPS sync; `display_*` fields are preserved for user/dashboard edits. UI should prefer `display_*` when present, then fall back to `source_*`.
+6. For machine-to-machine connector endpoints, test from the VPS with the actual Bearer instance secret. A browser page loading successfully does not prove server POSTs work; conversely, a browser `Forbidden` page on a Lovable preview can be bot/hosting protection and does not disprove server-to-server sync.
+7. If Lovable/Cloudflare returns `403 error code: 1010` for `/api/public/connector/*`, the likely blocker is hosting/bot protection on server-to-server calls. Ask Lovable to make connector endpoints reachable without cookies/browser verification, or move them to Supabase Edge Functions / another M2M-safe API host.
+8. Require connector sync responses to include counts (`leaders_upserted`, `team_members_upserted`, `recurring_jobs_upserted`, `unassigned_jobs`) so dashboard state can be debugged without guessing.
+9. Normalize connector datetimes to strict UTC `Z` strings before sending to Lovable Zod schemas. Hermes/Python offsets like `+00:00` may be valid ISO but can fail `z.string().datetime()` depending on Zod options.
+10. Do not model area leaders as `team_members[]` under another area leader when the DB uses a single `parent_agent_id` plus `is_area_leader` flag. A row cannot safely be both a top-level leader and a child in the same hierarchy; use a separate future `reports_to_agent_id` concept if the UI needs executive reporting lines.
+11. Before explaining or enabling any scheduled cleanup route such as `/api/public/cron/cleanup`, verify the route implementation and exact database tables it deletes from. Do not reassure from memory. Cleanup must use a hard allowlist of temporary/log tables only (`error_logs`, `sync_attempts`, `request_logs`, `temp_payloads`, `expired_sessions`, `notification_attempts`) and must never delete user-visible durable value (`reports`, `agent_outputs`, `tasks`, `companies`, `agents`, `user_profiles`, `workspaces`) unless Gus explicitly approves a separate archival/deletion policy. Default retention framing: reports/outputs are permanent unless the user deletes them; logs are temporary unless needed for billing, audit, or debugging.
+12. When reviewing Supabase safe-mirror hygiene plans, treat row-level security as insufficient for raw payload columns. RLS protects rows, not fields: member-readable tables must not expose `payload_raw`, `detail_raw`, or token material. Prefer admin-only raw tables or safe views, derive connector `company_id` from the authenticated instance secret, require service-role functions to filter by company explicitly, and verify with real two-company/two-user cross-tenant tests.
+13. For agentesPRO dashboard metrics, do not assume zero counters mean a UI bug. First verify whether `activity_events` and `reports` contain rows in the requested date range and company. The dashboard can only count work that was emitted into safe operational tables.
+14. Model metrics as date-scoped operations, not static profile fields: support last hour, today, week, month, all time, and later custom ranges. Use explicit `activity_events.status`/`source` columns with kind-prefix fallback for legacy rows. Label early counts as “Work completed,” not “Tasks completed,” until the `tasks` table is genuinely populated.
+15. Keep reports as durable artifacts and activity as operational logs: `reports_delivered` should count from the `reports` table; activity events can link to reports but should not be the primary report count source. Activity detail views must show only safe `payload_summary`, never raw sibling tables.
+16. If real Hermes event emission is not ready, a temporary super-admin-only seed endpoint is acceptable for visual QA, but seed rows must be clearly tagged with a removable `seed_batch`, must never write raw payloads, and must be disabled/removed once real event ingestion exists.
+17. For dashboard client value, optimize agent cards and task views around the question “what did my agents do today?” Keep cards slim, show the latest meaningful task name, and move dense details into the drawer.
+18. Until the structured `tasks` table is genuinely populated, derive Tasks v1 from safe `activity_events`: task title from `payload_summary.task_title ?? summary`, subtasks from `payload_summary.subtasks`, and never query raw sibling tables for task detail.
+19. For Hermes-side activity emitters, send both compatibility keys when endpoint versions differ (`profile_name` + `agent_profile_name`, `external_id` + `external_run_id`) and include `task_title`, `project`, `output_type`, and `subtasks[]` in `payload_summary` for task-table UX.
+20. If Gus requests a dummy dashboard verification task that describes public website publishing or a Git push, treat it as a simulated safe activity event unless he explicitly asks for a real website change and the repo/config is verified.
+
+- `references/agentespro-lovable-connector-observability.md` for the payload shape and debugging checklist, `references/agentespro-lovable-vps-connector-debugging.md` for deployed endpoint/company/hierarchy pitfalls, `references/agentespro-lovable-hygiene-and-agent-inventory.md` for Hygiene Round 2 verification gates, safe cleanup proof requirements, VPS agent inventory shape, and pending dashboard work, `references/agentespro-agent-metrics-activity-logs.md` for metrics/activity-log design patterns and verification checks, and `references/agentespro-agent-tasks-and-activity-emitter.md` for Tasks v1, latest-task card UX, subtasks, and Hermes activity emitter payload conventions.
 
 ## GitHub rules
 
@@ -252,6 +314,20 @@ Avoid waste:
 
 Be concise and operational.
 
+### Plan-only / no-implementation mode
+
+When Gus says **“make plan first,” “do not implement,” “plan only,”** or similar, stop before editing files, running migrations, deploying, or changing repo state. Produce a clear implementation plan and handoff only. Do not convert the plan into execution inside the same turn unless Gus explicitly approves implementation afterward.
+
+For agentesPRO portal/product plans, include:
+
+- source-of-truth repo/docs to update
+- Supabase/schema implications
+- connector/payload implications
+- per-company/per-profile scoping rules
+- verification steps
+- reusable client-onboarding documentation updates so future installations inherit the feature
+- a final **Lovable instructions** block Gus can paste directly
+
 For plans:
 
 ```txt
@@ -262,6 +338,7 @@ GitHub flow
 Risks
 Human approval points
 Next command/action
+Lovable instructions / implementation handoff when relevant
 ```
 
 For status:
@@ -302,10 +379,901 @@ Use `scripts/start_cto_project.py` to create a real Kanban board and initial CTO
 - `references/portable-team-skill-distribution.md`
 - `references/kanban-project-launch.md`
 - `references/kanban-project-launcher-build-notes.md`
+- `references/memory-os-graphify-hindsight.md` — reusable Obsidian + Graphify + Hindsight Memory OS implementation pattern for agentesPRO/client VPS deployments.
+- `references/agentespro-lovable-vps-connector-debugging.md` — debug pattern for Lovable/Supabase connector sync issues: deployed endpoint drift, company_id mismatch, leader/team hierarchy visibility, debug envelopes, and defensive v2 + parent_profile_name payloads.
+- `references/agentespro-safe-mirror-hygiene-review.md` — review checklist for Supabase safe-mirror hygiene plans: RLS/raw payload exposure, connect token policies, instance-secret tenant scoping, privacy redaction, service-role filtering, connector health status, and cross-tenant verification.
+- `scripts/install_cto_agentespro.py`
 - `scripts/install_cto_agentespro.py`
 - `scripts/init_repo_context.py`
 - `scripts/start_cto_project.py`
 - `scripts/package_skill.py`
+
+```
+
+---
+
+
+# File: `references/agentespro-agent-metrics-activity-logs.md`
+
+```markdown
+# agentesPRO Agent Metrics + Activity Logs
+
+Use this reference when the agentesPRO/Lovable dashboard needs live operational metrics, activity feeds, or date-scoped agent performance.
+
+## Core principle
+
+The dashboard cannot count work that was never emitted into safe operational tables.
+
+If agent cards show `0` for work completed, failed runs, success rate, or reports, first inspect whether `activity_events` and `reports` actually contain rows for the company/date range before assuming a UI bug.
+
+## Date-scoped metrics
+
+Agent metrics should be range-scoped, not static profile metadata.
+
+Required ranges:
+
+- `last_hour`
+- `today`
+- `week`
+- `month`
+- `all_time`
+- custom `from`/`to` later
+
+Default range can be `week` for overview dashboards or `today` for operations pages.
+
+Logs should always be paginated, even for `all_time`.
+
+## Status/source schema
+
+Prefer explicit columns on `activity_events`:
+
+- `status`: `success`, `warning`, `error`, `needs_review`, `running`, `info`, `unknown`
+- `source`: `manual`, `cron`, `connector`, `email`, `dashboard`, `system`, `agent`, `api`, `unknown`
+- `task_type`
+- `external_run_id`
+- `related_report_id`
+
+Keep `kind` as the semantic event name, not the main filter mechanism.
+
+Use fallback parsing for legacy rows:
+
+```sql
+status_for_metrics = coalesce(status, derive_status_from_kind(kind), 'unknown')
+source_for_metrics = coalesce(source, derive_source_from_kind(kind), 'unknown')
+```
+
+Derive examples:
+
+- `*.completed`, `*.success`, `report.created`, `sync.completed` -> `success`
+- `*.failed`, `*.error`, `error.*` -> `error`
+- `*.warning`, `warn.*` -> `warning`
+- `review.needed`, `*.needs_review` -> `needs_review`
+- `*.running`, `started`, `in_progress` -> `running`
+- `heartbeat`, `sync`, `info` -> `info`
+
+Source examples:
+
+- `cron.*`, `schedule.*`, `recurring.*` -> `cron`
+- `connector.*`, `sync.*`, `heartbeat.*` -> `connector`
+- `email.*`, `inbox.*`, `gmail.*` -> `email`
+- `dashboard.*`, `user.*` -> `dashboard` or `manual`
+- `system.*`, `cleanup.*` -> `system`
+- `agent.*`, `task.*`, `report.*` -> `agent`
+
+## Tasks table vs activity events
+
+If `tasks` is empty, do not show a misleading “Tasks completed” metric.
+
+Use label:
+
+```text
+Work completed
+```
+
+Counting rule:
+
+1. If `tasks` has rows for that agent/date range, count structured task statuses from `tasks`.
+2. If `tasks` has zero rows, fall back to `activity_events`:
+   - completed work: success events with task/report/output completion kinds
+   - failed runs: error/failed events
+   - needs review: `needs_review` events
+   - open tasks: `0` or unknown until tasks are populated
+
+## Reports delivered
+
+`reports_delivered` should count from `reports`, not from `activity_events`.
+
+Activity events may have `related_report_id` for linking, but reports remain the durable artifact source of truth.
+
+## Success rate
+
+Use:
+
+```text
+success / (success + warning + error + needs_review)
+```
+
+If denominator is 0, show `—` / null, not 100%.
+
+Unknown events should count in an unknown bucket but should not affect success rate.
+
+## Activity log feed
+
+Rows should show:
+
+- timestamp
+- agent name
+- kind / task type
+- resolved status
+- resolved source
+- summary
+- related report link, if any
+- privacy level
+- expandable safe detail
+
+Filters:
+
+- agent
+- status
+- source
+- kind prefix/search
+- date range
+
+Pagination:
+
+- default limit 50
+- cursor on `(occurred_at, id)`
+
+Detail endpoint must filter by both `company_id` and `id`. It should return only `payload_summary` from the safe table and must never query raw sibling tables.
+
+## Security rules
+
+- Normal users read only safe `activity_events` via RLS/company scope.
+- `activity_event_raw` remains super-admin/admin-only.
+- UI expansion shows safe `payload_summary` only.
+- Never expose raw payloads, email bodies, headers, cookies, auth tokens, or secrets.
+- If service-role functions are used, every query must explicitly filter by `company_id`.
+
+## Debugging zero metrics
+
+When metrics show zero:
+
+1. Count `activity_events` by company/date/agent/status/source/kind.
+2. Count `reports` by company/date/agent.
+3. Confirm agent IDs/profile mappings match the workforce sync output.
+4. Confirm `occurred_at` is inside the selected range.
+5. Confirm fallback status/source derivation works for legacy rows.
+6. Confirm RLS/company scope is not hiding the rows.
+7. Only then inspect UI aggregation.
+
+Likely cause in early agentesPRO dashboard work: Hermes has not yet emitted real activity events for chat/session work, so the dashboard has no operational data to count.
+
+## Temporary seed endpoint for visual QA
+
+A temporary seed endpoint is acceptable before real Hermes event emission exists:
+
+```text
+POST /api/public/admin/seed-activity
+```
+
+Requirements:
+
+- super-admin only
+- no anon and no normal company member
+- explicit target `company_id`
+- safe `payload_summary` only
+- no raw payload insertion
+- tag every row with `seeded: true` and `seed_batch`, e.g. `metrics-v1-visual-qa`
+- provide a cleanup path like `clear-seeded-activity` or `clear_existing_seed: true`
+- remove/disable after real event ingestion is online
+
+Seed about 30 realistic events across agents, statuses, sources, and date ranges so the UI can be visually verified.
+
+## Verification checklist
+
+- Seed explicit `status`/`source` rows and legacy null rows.
+- Verify last hour/today/week/month/all-time change the numbers.
+- Verify `reports_delivered` comes from `reports` only.
+- Verify User A cannot read Company B rows or details.
+- Verify row expansion never touches raw tables.
+- Verify unknown rows are visible but excluded from success rate.
+- Verify activity logs paginate at 50 rows.
+
+```
+
+---
+
+
+# File: `references/agentespro-agent-tasks-and-activity-emitter.md`
+
+```markdown
+# agentesPRO Agent Tasks + Activity Emitter Pattern
+
+Use this reference when working on the agentesPRO Lovable dashboard, VPS connector, or Hermes-side instrumentation for agent metrics, activity logs, task tables, and subtasks.
+
+## Core product principle
+
+The dashboard must answer:
+
+> What did my agents do today?
+
+Do not stop at uptime, last seen, or static agent cards. Clients need visible work history: task names, completed work counts, recent logs, and expandable subtasks.
+
+## Data truth hierarchy
+
+Until the structured `tasks` table is genuinely populated, use `activity_events` as the operational task history.
+
+- `reports` = durable user-facing artifacts; count `reports_delivered` from the reports table.
+- `activity_events` = operational work/log/task stream; use for Work completed, latest task, recent logs, and task table v1.
+- raw sibling tables = admin-only debugging; never use for normal UI detail.
+
+## Agent card UX
+
+Keep cards executive-glance only:
+
+- agent name
+- role
+- status
+- last meaningful activity / fallback muted last seen
+- latest completed task name
+- 2–3 range-scoped KPIs: Work completed, Reports delivered, Errors / Needs review
+
+Move everything else to the drawer/detail panel: active days, success rate, recurring jobs, total events, tools, email access, team roster, full logs.
+
+## Latest completed task logic
+
+Use latest meaningful completed work in the selected range:
+
+```sql
+status = 'success'
+kind in ('agent.work.completed','task.completed','report.created','cron.job.completed')
+source not in ('connector','system')
+order by occurred_at desc
+limit 1
+```
+
+Display name rule:
+
+```text
+task_name = payload_summary.task_title ?? summary
+```
+
+If none exists in the selected range, show `No completed task in this range.`
+
+## Tasks section v1
+
+Add a read-only Tasks section/table, sourced from `activity_events`:
+
+Columns:
+
+- time
+- task name
+- status
+- agent
+- task_type
+- source
+- related report link
+
+Click/expand a row to show safe subtasks:
+
+- subtask title
+- agent that tackled it
+- status
+- optional short summary
+
+Subtasks source:
+
+```text
+payload_summary.subtasks
+```
+
+Never query or expose `activity_event_raw`.
+
+## Recommended server functions
+
+Add `listAgentTasks`:
+
+```ts
+listAgentTasks({
+  company_id,
+  range,
+  from?,
+  to?,
+  agent_id?,
+  status?,
+  source?,
+  task_type?,
+  cursor?,
+  limit = 50
+})
+```
+
+Return:
+
+- id
+- occurred_at
+- agent_id
+- agent_name
+- task_name
+- task_type
+- status
+- source
+- summary
+- related_report_id
+- subtasks_count
+- has_subtasks
+
+Add `getAgentTaskDetail({ company_id, id })` returning only safe fields:
+
+- task_name
+- summary
+- payload_summary
+- subtasks[]
+
+Always filter by `company_id` and `id`, even with admin/service-role clients.
+
+## Activity emitter payload shape
+
+Hermes-side emitters should send task-friendly fields through the safe activity endpoint:
+
+```json
+{
+  "profile_name": "cmo-agentespro",
+  "agent_profile_name": "cmo-agentespro",
+  "kind": "agent.work.completed",
+  "status": "success",
+  "source": "agent",
+  "task_type": "public_memory_post",
+  "summary": "CMO completed a public-memory post task",
+  "payload_summary": {
+    "task_title": "Draft public-memory layer post for gusgarza.com",
+    "project": "gusgarza.com",
+    "output_type": "post",
+    "subtasks": [
+      { "title": "Define post angle", "agent_profile_name": "cmo-agentespro", "status": "success" },
+      { "title": "Write public-memory draft", "agent_profile_name": "cmo-agentespro", "status": "success" },
+      { "title": "Prepare git publish handoff", "agent_profile_name": "cmo-agentespro", "status": "success" }
+    ],
+    "subtasks_count": 3
+  }
+}
+```
+
+Compatibility note: if endpoint versions differ, send both `profile_name`/`agent_profile_name` and both `external_id`/`external_run_id`.
+
+## Meaningful activity vs presence
+
+Store both when available:
+
+- `last_activity` / `last_seen` = latest event of any kind, including heartbeat/sync/info.
+- `last_meaningful_activity_at` = latest real work event only.
+
+UI should show meaningful activity as `Last activity`; fallback to raw last seen with a muted `Last seen` label.
+
+Ignore connector/system heartbeat and pure sync events for meaningful work.
+
+## Visual QA seed pattern
+
+Temporary super-admin seed endpoints are acceptable for UI verification only if:
+
+- super-admin gated
+- scoped to one explicit `company_id`
+- rows are tagged with `payload_summary.seed = true` and `seed_batch`
+- clear/delete endpoint removes only tagged rows for that company
+- no raw payloads are seeded
+- endpoint is disabled/removed once real ingestion exists
+
+## Public-memory dashboard test pitfall
+
+If Gus asks for a dummy CMO/agent task that mentions writing a public-memory post and pushing to Git, do not actually publish or push unless he explicitly asks for a real website change and the publishing repo/config is verified. For dashboard visual QA, emit a simulated safe activity event tagged as test/seed data.
+
+## Verification checklist
+
+- Latest task appears on correct agent card.
+- `/tasks` shows the task in the selected date range.
+- Expanding row shows subtasks and agent names.
+- Date filters change task rows/counts.
+- Cross-tenant user cannot see other company tasks.
+- Task detail never queries raw sibling tables.
+- Reports delivered counts from reports table, not activity events.
+
+```
+
+---
+
+
+# File: `references/agentespro-lovable-connector-observability.md`
+
+```markdown
+# agentesPRO Lovable dashboard connector observability
+
+Use this reference when Gus asks to continue the agentesPRO user-facing dashboard/Lovable integration, especially Agents / AI Workforce Observability.
+
+## Operating pattern
+
+1. Treat the VPS as the source of truth for Hermes workforce metadata.
+2. Treat Lovable/Supabase as the dashboard/state store.
+3. Do not ask Lovable/browser code to read the VPS filesystem directly.
+4. Build or update a VPS-side connector that pushes safe metadata to `/api/public/connector/*`.
+5. Verify with real endpoint output before telling Gus the dashboard should update.
+6. If the UI does not reflect data, split the problem clearly:
+   - connector payload generated locally
+   - endpoint reachable / auth accepted
+   - sync response confirms writes
+   - database child rows exist
+   - `listAgentWorkforce` returns hierarchy
+   - deployed `/agents` route renders the live implementation, not a placeholder/stale build
+
+## Current connector shape
+
+The dashboard expects protocol v2 payloads:
+
+```json
+{
+  "connector_protocol_version": 2,
+  "connector_protocol_name": "ai_workforce_observability_v1",
+  "profiles": []
+}
+```
+
+Each top-level profile should include:
+
+- `profile_name`
+- `status`
+- `agent` with `source_name`, `source_role`, `source_description`, `archetype`, `tools_summary`, `email_access`, `installed_status`, `runtime_status`, `last_seen_at`, metrics
+- `team_members[]`
+- `recurring_jobs[]`
+
+## Expected hierarchy
+
+Area leaders:
+
+- `gus-hermie` / Larvuz
+- `cto-agentespro`
+- `cmo-agentespro`
+- `ops-agentespro`
+- `growth-agentespro`
+- `ai-production-director`
+
+CTO team:
+
+- `builder-agentespro`
+- `reviewer-agentespro`
+- `qa-agentespro`
+- `devops-agentespro`
+
+CMO team:
+
+- `mkt-agentespro`
+- `growth-agentespro`
+- `seo-agentespro`
+- `social-agentespro`
+- `content-agentespro`
+- `brand-agentespro`
+- `analytics-agentespro`
+
+AI Production team:
+
+- `movie-maker`
+- `christmas-witch`
+
+## Email visibility rule
+
+For the authenticated internal agentesPRO dashboard, show full email addresses in cards/drawers because operators need to know exactly which inboxes are connected.
+
+Do not expose email bodies, credentials, raw logs, or private message content. Sync metadata only:
+
+```json
+{
+  "provider": "google_workspace",
+  "email": "gus@metazooie.com",
+  "access_type": "read_summary",
+  "status": "connected",
+  "last_checked_at": "ISO_DATE",
+  "privacy_level": "metadata_only"
+}
+```
+
+## Verification checklist
+
+When asked to finish/fix this integration:
+
+1. Generate the connector payload and count leaders/team/jobs/email locally.
+2. POST heartbeat and sync with the Bearer instance secret.
+3. Confirm endpoint output, ideally including counts:
+   - `leaders_upserted`
+   - `team_members_upserted`
+   - `recurring_jobs_upserted`
+   - `unassigned_jobs`
+4. Visit the deployed `/agents` route.
+5. If it still shows a placeholder/WIP page, tell Lovable the backend accepted sync but the deployed frontend route is stale or not wired to `listAgentWorkforce`.
+6. Give Gus a copy-paste Lovable message with exact observed outputs and next checks.
+
+## Common diagnostic split
+
+- `HTTP 403 / error code 1010`: hosting/bot-protection blocked machine-to-machine connector POSTs. Ask Lovable to make `/api/public/connector/*` accept server clients with `Authorization: Bearer INSTANCE_SECRET` and no browser challenge.
+- `200 {"ok":true}` but no UI hierarchy: endpoint accepts payload, but either team member upsert is broken, query does not return children, or deployed UI route is stale.
+- `/agents` shows “WORK IN PROGRESS / Real agents integration coming next”: the live route is still placeholder/stale even if backend sync works.
+
+## Handoff style for Gus
+
+Gus expects action first, then a Lovable-ready message. Report:
+
+- what was done on VPS
+- real command/API result
+- what still blocks the visible dashboard
+- exact message to send Lovable
+
+Keep it concise and operational.
+```
+
+---
+
+
+# File: `references/agentespro-lovable-hygiene-and-agent-inventory.md`
+
+```markdown
+# agentesPRO Lovable hygiene + VPS agent inventory pattern
+
+Use this when continuing the agentesPRO Lovable/Supabase dashboard integration after the connector/RLS/privacy hardening work.
+
+## Hygiene Round 2 verification pattern
+
+Before accepting a Lovable implementation that touches tenant security, raw payloads, cron cleanup, or connector endpoints, require real proof for these gates:
+
+1. REDACTION_SALT is installed and endpoint output proves HMAC redaction works.
+2. Migrations applied cleanly and schema changed as expected.
+3. Cross-tenant seed exists: Company A/B, User A/B, one agent/activity/health/raw/token per company.
+4. User A can read only Company A safe rows; User B can read only Company B safe rows.
+5. Authenticated users cannot read raw sibling tables or connect_tokens.
+6. Super-admin/service-role can read/write admin data where intended.
+7. Connector health endpoint derives tenant from bearer secret and ignores spoofed body tenant fields.
+8. Activity/health redaction is tested with long bodies, emails, sensitive keys, and summary-only PII fallback.
+9. cleanup_expired_rows() is actually executed on old seeded rows; reports remain untouched.
+10. Rate limit test proves 61st-ish request returns 429.
+
+Do not accept "policy visible" as proof for cleanup. Cleanup deletes data; ask for before/after counts.
+
+## Safe cleanup rule
+
+Reports and durable user-facing outputs are never auto-deleted. Operational logs can expire. Cleanup must be an explicit allowlist: one DELETE per approved table, no broad loops or pattern matching.
+
+## VPS agent inventory current pattern
+
+The connector source of truth is `/root/agentespro-connector/sync_workforce.py`.
+
+It sends protocol v2 payloads:
+
+```json
+{
+  "connector_protocol_version": 2,
+  "connector_protocol_name": "ai_workforce_observability_v1",
+  "profiles": []
+}
+```
+
+Current dashboard payload class:
+
+- safe org chart / workforce metadata
+- profile_name, source_name, source_role, source_description, archetype
+- tools_summary
+- installed_status, runtime_status, last_seen_at, last_activity
+- parent_profile_name / is_area_leader
+- email access metadata only where relevant
+- recurring_jobs assigned by name heuristics
+- task counters, currently often placeholder zeroes
+
+Never sync secrets, env values, email bodies, raw logs, memory contents, session transcripts, profile DBs, auth locks, credentials, or full skill/persona files.
+
+## Known pending work after safe metadata sync
+
+When Gus asks what is left, the next practical items are usually:
+
+1. Connector Status dashboard widget using health backend: healthy/degraded/down, last seen, recent warning/error.
+2. Better recurring job ownership mapping or an unassigned jobs section.
+3. Real agent metrics instead of zero counters.
+4. Real runtime status and last useful activity, not just sync timestamp.
+5. Role gating and invites before client teams self-manage access.
+6. Decide whether profiles such as `signal-cruncher` should be dashboard-visible.
+
+## Handoff style
+
+For Gus, keep this operational and concise:
+
+- what data exists on VPS
+- what the dashboard currently receives
+- what is intentionally not sent
+- what is pending / recommended next
+- whether it is a blocker or just product polish
+
+```
+
+---
+
+
+# File: `references/agentespro-lovable-vps-connector-debugging.md`
+
+```markdown
+# agentesPRO Lovable ↔ VPS connector debugging
+
+Use when the agentesPRO dashboard/Lovable app does not show synced Hermes agents, team members, recurring jobs, email access, or status metrics.
+
+## Durable lessons
+
+### 1. Verify the deployed connector, not just Lovable's editor state
+Lovable may report that code is complete while the public/custom-domain endpoint still serves an older build. Always test the live endpoint the VPS actually uses.
+
+Check response shape after `/api/public/connector/sync`:
+
+```json
+{
+  "ok": true,
+  "connector_protocol_version": 2,
+  "counts": { ... },
+  "per_profile": [ ... ],
+  "received_top_level_keys": [ ... ],
+  "received_first_profile_keys": [ ... ]
+}
+```
+
+If the response is only:
+
+```json
+{"ok": true, "synced": [...]}
+```
+
+then the deployed API is still old, even if the repo/editor has newer code.
+
+### 2. Distinguish API success from data visibility
+`200 {"ok":true}` only proves the request was accepted. It does **not** prove:
+
+- `team_members[]` were parsed
+- child `agents` rows were written
+- `parent_agent_id` was set
+- leader rows have `is_area_leader=true`
+- the frontend is reading the same `company_id`
+- the custom domain has the latest route build
+
+Ask for or add debug counts:
+
+```json
+{
+  "counts": {
+    "leaders_received": 6,
+    "leaders_upserted": 6,
+    "team_members_received": 12,
+    "team_members_upserted": 12,
+    "recurring_jobs_received": 14,
+    "recurring_jobs_upserted": 14
+  },
+  "per_profile": [
+    {"profile_name": "cto-agentespro", "team_members_received": 4}
+  ]
+}
+```
+
+### 3. Check the active company boundary
+If the UI says "No agents yet" after a successful sync, verify that the connector instance's `company_id` matches the active workspace/company selected by the user. The app can have demo/Acme/default company state while the connector writes to Larvuz or another tenant.
+
+### 4. Use defensive payload compatibility during schema transitions
+When Lovable is transitioning from flat cards to hierarchy, send both shapes:
+
+Primary v2 nested shape:
+
+```json
+{
+  "profile_name": "cto-agentespro",
+  "agent": {"is_area_leader": true},
+  "team_members": [
+    {"profile_name": "builder-agentespro", "source_name": "Builder-agentesPRO"}
+  ],
+  "recurring_jobs": []
+}
+```
+
+Compatibility fallback shape:
+
+```json
+{
+  "profile_name": "builder-agentespro",
+  "agent": {
+    "is_area_leader": false,
+    "parent_profile_name": "cto-agentespro"
+  },
+  "team_members": [],
+  "recurring_jobs": []
+}
+```
+
+This lets old deployed connector code use the existing `parent_profile_name → parent_agent_id` path even if nested `team_members[]` parsing/debug is stale.
+
+### 5. Required dashboard visibility checks
+For the Agents page to show hierarchy:
+
+- leaders must have `is_area_leader=true`
+- child rows must have `parent_agent_id=<leader agent id>`
+- `listAgentWorkforce` must filter leaders by `is_area_leader` and group children by `parent_agent_id`
+- RLS/company scope must allow the signed-in user to read the same company rows
+- the deployed `/agents` route must be the live observability UI, not the old WIP placeholder
+
+### 6. Machine-to-machine endpoint access
+If POSTs return Cloudflare/Lovable 1010/403, the connector endpoint is blocked for server clients. Lovable should expose `/api/public/connector/*` for Bearer-token machine calls without browser cookies or interactive challenge, or move connector ingestion to Supabase Edge Functions/another API surface.
+
+### 7. Normalize datetimes for Lovable/Zod
+Hermes cron output may produce Python-style ISO timestamps with offsets:
+
+```text
+2026-06-05T15:03:23.660487+00:00
+```
+
+Some Lovable/Zod schemas using `z.string().datetime()` reject offsets unless configured. Before sending `last_run_at` / `next_run_at`, normalize to strict UTC `Z`:
+
+```text
+2026-06-05T15:03:23.660487Z
+```
+
+Treat missing/non-ISO timestamps as `null`, not as raw strings like `never` or partial dates. If the sync suddenly fails after recurring jobs are added, run it manually and read the first `invalid_body` path; one invalid recurring job can reject the whole payload before team members are written.
+
+### 8. Do not nest leaders under leaders in a single-parent hierarchy
+The agentesPRO dashboard currently models hierarchy with one `parent_agent_id` and one `is_area_leader` flag per `agents` row. In that model, do **not** send CTO/CMO/Ops/Growth/AI Production as `team_members[]` under Larvuz, because the team-member upsert path may set:
+
+```text
+parent_agent_id = Larvuz
+is_area_leader = false
+```
+
+on those same rows, causing leader cards to disappear or move under Larvuz. Keep area leaders top-level. If the product needs “Larvuz supervises CTO/CMO/etc.”, ask Lovable for a separate relationship such as `reports_to_agent_id` instead of reusing `parent_agent_id`.
+
+Use this safer payload split:
+
+```text
+Larvuz: team_members=[]
+CTO: team_members=[Builder, Reviewer, QA, DevOps]
+CMO: team_members=[MKT, SEO, Social, Content, Brand, Analytics]
+Growth: top-level leader, not nested under CMO unless schema supports leader-with-parent
+AI Production: team_members=[Movie-maker, Christmas-witch]
+```
+
+## Good message to Lovable when blocked
+
+```text
+The VPS connector is posting connector_protocol_version=2 and returns HTTP 200, but the deployed endpoint still returns the old synced-only envelope. Please confirm the public/custom-domain connector endpoint is running the latest build and return debug counts for leaders/team_members/recurring_jobs. Also verify the connector company_id matches the active company shown in the Agents page and that the six leader rows are is_area_leader=true.
+```
+
+```
+
+---
+
+
+# File: `references/agentespro-safe-mirror-hygiene-review.md`
+
+```markdown
+# agentesPRO Safe Mirror Hygiene Review Notes
+
+Use when reviewing Lovable/Supabase hygiene plans for the agentesPRO client dashboard connector.
+
+## Core architecture
+
+- Supabase is the client-safe operating mirror.
+- Hermes/VPS remains the operational brain/source.
+- Dashboard reads tenant-safe mirror state, not raw Hermes files/logs.
+- Reports and user-visible outputs are durable by default; operational logs can expire.
+
+## RLS and raw payload pitfall
+
+RLS is row-level, not field-level. If a company member can `SELECT` a row, do not assume `detail_raw` / `payload_raw` is protected just because the UI does not render it.
+
+Safer patterns:
+
+1. Split raw payloads into admin-only tables:
+   - `activity_event_raw`
+   - `connector_health_event_raw`
+2. Or expose member-readable safe views only:
+   - `activity_events_safe`
+   - `connector_health_events_safe`
+3. Or use column privileges very carefully, then verify with real non-admin roles.
+
+Never rely on frontend hiding as a security control.
+
+## `connect_tokens` policy
+
+Do not grant normal company-member `SELECT` on `connect_tokens` if the table contains token values, hashes, invite codes, or other sensitive handshake data.
+
+Preferred:
+
+- `service_role` only
+- super-admin only
+- later: owner/admin via explicit scoped policy if needed
+
+If the UI needs token state, expose a safe status view with no token material:
+
+- id
+- company_id
+- created_at
+- expires_at
+- used_at
+- status
+- label
+
+## Connector endpoint scoping
+
+For machine-to-machine connector endpoints authenticated by an instance secret:
+
+1. Authenticate the bearer instance secret.
+2. Look up the `hermes_instance` row.
+3. Derive `company_id` and `hermes_instance_id` server-side.
+4. Ignore/reject client-supplied `company_id` or `hermes_instance_id` for insertion scope.
+
+A compromised/misconfigured connector should not be able to write into another company by changing the request body.
+
+## Service-role server functions
+
+Service-role bypasses RLS. Every service-role server function must explicitly enforce tenant scope:
+
+- derive or require `company_id`
+- filter every query by that `company_id`
+- never return cross-tenant data because “RLS will handle it”
+
+Dev bypass paths are useful, but they should not become an excuse to skip company filtering.
+
+## Connector health design
+
+`detail_summary` should usually be optional with default `{}`. Heartbeats should stay tiny and not require fake detail objects.
+
+Define connector status thresholds explicitly:
+
+- `healthy`: `last_seen_at` fresh, no recent error
+- `degraded`: recent warn/error but connector still fresh
+- `down`: stale `last_seen_at` or repeated missed heartbeats
+- precedence: down > degraded > healthy
+
+Suggested starting thresholds:
+
+- healthy: `last_seen_at` within 5 minutes and no error in last 15 minutes
+- degraded: `last_seen_at` within 15 minutes with recent warn/error, or recent missed heartbeat followed by recovery
+- down: `last_seen_at` older than 15 minutes, or 3 consecutive missed heartbeats
+
+## Privacy/redaction review points
+
+Redaction should happen before storage and again before display.
+
+Prefer HMAC/salted hashes for email identity tokens, not plain hashes, because emails are guessable.
+
+Expand summary stripping/redaction keys beyond obvious body fields:
+
+- `body`, `message`, `content`, `text`, `html`
+- `snippet`, `description`, `transcript`, `notes`
+- `raw`, `payload`, `thread`, `conversation`
+- `headers`, `authorization`, `cookie`, `set_cookie`
+- `access_token`, `refresh_token`, `id_token`, `api_key`, `secret`, `password`
+- `body_html`, `raw_mime`, `attachments`
+
+Rule: summaries are safe display surfaces; raw detail belongs only in admin-only storage.
+
+## Verification checklist
+
+When reviewing/approving a hygiene migration, require real cross-tenant tests:
+
+1. Create Company A + Company B.
+2. Create User A member of Company A.
+3. Create User B member of Company B.
+4. Verify User A sees only Company A rows.
+5. Verify User A cannot read Company B rows.
+6. Verify members cannot access `detail_raw`, `payload_raw`, or `connect_tokens`.
+7. Verify super-admin can read both companies.
+8. Verify service-role connector writes still work.
+9. Verify Connector A's token cannot write events for Company B.
+10. Run cleanup and confirm only allowlisted operational log tables are affected.
+
+## Approval stance
+
+Approve safe-mirror hygiene plans only after these are handled:
+
+- raw payloads are not exposed through member-readable rows
+- `connect_tokens` is not member-readable if it contains sensitive material
+- connector endpoints derive tenant scope from authenticated instance secrets
+- service-role paths explicitly filter by company
+- cross-tenant tests are real, not hypothetical
 
 ```
 
@@ -636,6 +1604,106 @@ PR: <url>
 Tests: passed / failed
 Decision needed: Merge? Deploy?
 ```
+
+```
+
+---
+
+
+# File: `references/memory-os-graphify-hindsight.md`
+
+```markdown
+# Memory OS: Obsidian + Graphify + Hindsight
+
+Use this reference when implementing a reusable memory layer for agentesPRO, Hermes agents, client VPS deployments, or multi-agent websites.
+
+## Core model
+
+- **Obsidian is the library**: official human-readable source of truth, SOPs, project notes, prompts, decisions.
+- **Graphify is the map**: project/code/document relationship graph for repos, websites, skills, docs, and workflows.
+- **Hindsight is the memory**: agent learning layer for durable preferences, corrections, outcomes, and lessons.
+- **agentesPRO is the interface**: the website/dashboard/agent product that exposes the memory layer.
+
+## Recommended implementation sequence
+
+### Phase 1 — Graphify + structure first
+
+1. Create a project Memory OS root, usually `/root/memory-os` for internal agentesPRO work.
+2. Create a project manifest: `projects/<project-id>/memory-manifest.yaml`.
+3. Create reusable templates for client/VPS installs.
+4. Sync selected project sources into a safe corpus folder, excluding `.git`, `node_modules`, `dist`, binaries/media, caches, and env files.
+5. Run Graphify for code-only AST graphs where no LLM key is available.
+6. If no Graphify semantic LLM key is available, create a deterministic source graph fallback so the project still has a relationship map.
+7. Add a healthcheck script that verifies manifests, corpus, source graph, and graph JSON outputs.
+8. Save the human-readable source-of-truth note into Obsidian.
+
+### Phase 2 — Hindsight later
+
+1. Define Hindsight memory banks before deployment.
+2. Use central Hindsight for Gus/internal company systems.
+3. Use isolated Hindsight per client VPS for privacy and client boundaries.
+4. Deploy only after Docker/runtime and provider key are confirmed.
+5. Add retain/recall/reflect hooks only after Phase 1 retrieval structure is stable.
+
+## Manifest pattern
+
+Every serious agent website/client VPS should have a manifest with:
+
+- project id/name/type/owner
+- Obsidian vault path and scoped folders
+- repo/source paths
+- Graphify corpus/output paths
+- Hindsight API/UI and memory bank names
+- agent-specific scopes
+- retrieval order
+- conflict rules
+
+Recommended retrieval order:
+
+```txt
+hindsight_recall -> obsidian_source -> graphify_query -> live_files -> action -> verification -> hindsight_retain
+```
+
+## Conflict rules
+
+When systems disagree:
+
+1. Live repo/files win for actual implementation state.
+2. Obsidian wins for official company/project knowledge.
+3. Hindsight wins for preferences, corrections, outcomes, and behavior lessons.
+4. Graphify wins for structural file/code/document relationships.
+
+## Graphify pitfall
+
+`graphify extract` can build code-only AST graphs with no LLM key, but full semantic extraction for docs/markdown/media needs a provider key such as `GEMINI_API_KEY`, `GOOGLE_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, etc. Do not block the whole Memory OS if keys are absent: build AST graphs plus a deterministic source graph fallback, then mark semantic graphing as pending.
+
+## Reusable comandos
+
+Internal agentesPRO prototype paths:
+
+```bash
+/root/memory-os/scripts/run_graphify_project.sh agentespro
+/root/memory-os/scripts/memory_healthcheck.sh
+```
+
+Expected useful artifacts:
+
+```txt
+/root/memory-os/projects/<project>/memory-manifest.yaml
+/root/memory-os/projects/<project>/graphify/source-graph.json
+/root/memory-os/projects/<project>/graphify/SOURCE_GRAPH_REPORT.md
+/root/memory-os/projects/<project>/graphify/code-graphs/*/graphify-out/graph.json
+```
+
+## Productization rule
+
+For agentesPRO client tiers:
+
+- Small site: Markdown + simple search.
+- Medium site: Markdown + vector/RAG.
+- Large agent site: Obsidian/Markdown + Graphify + Hindsight.
+
+Never present Graphify as something that must be visible inside the public website. It is normally an internal intelligence layer for agents.
 
 ```
 
