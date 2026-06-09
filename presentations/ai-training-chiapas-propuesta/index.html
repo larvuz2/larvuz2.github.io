@@ -75,6 +75,24 @@
     }
     .image-box .label { position: relative; z-index: 1; max-width: 70%; }
 
+    .photo-card {
+      position: absolute;
+      z-index: 2;
+      overflow: hidden;
+      background: #eeeeee;
+      border: 1px solid rgba(17,17,17,.12);
+    }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: grayscale(.08) saturate(.92) contrast(1.04);
+      transform: scale(1.01);
+      transition: transform 600ms var(--ease-out), filter 600ms var(--ease-out);
+    }
+    .slide.visible .photo-card img { transform: scale(1.035); }
+
     .tool-pill {
       border: 1px solid rgba(17,17,17,.14); background: rgba(204,204,204,.16); padding: 16px 18px;
       font-size: 22px; line-height: 1; font-weight: 700; letter-spacing: -.01em;
@@ -135,15 +153,19 @@
 
       <section class="slide" data-slide="3" aria-label="Perfil del instructor">
         <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Perfil del Instructor</div>
-        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:770px;"></div>
-        <div class="image-box reveal r2" style="left:785px; top:100px; width:485px; height:330px;"><div class="label">Espacio para foto / retrato del instructor</div></div>
-        <div class="block reveal r3 paragraph" style="left:1325px; top:100px; width:495px;"><p><strong>Gus Garza</strong></p><p>Creative technologist, productor y fundador trabajando en IA aplicada a video, diseño, mundos 3D, juegos, automatización creativa y producción audiovisual.</p></div>
-        <div class="block rule-x reveal r4" style="left:785px; top:500px; width:1035px;"></div>
-        <div class="block reveal r5 paragraph-small" style="left:785px; top:555px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:34px 54px;">
-          <div class="check"><div><strong>Campañas internacionales</strong><br>Experiencia creando conceptos, piezas visuales y sistemas de producción para marcas y proyectos globales.</div></div>
-          <div class="check"><div><strong>IA generativa aplicada</strong><br>Especialización en prompting, modelos de imagen, video, renders, workflows y consistencia visual.</div></div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+
+        <div class="photo-card reveal r2" style="left:785px; top:100px; width:495px; height:300px;"><img alt="Gus Garza impartiendo una capacitación" src="assets/gus-workshop-teaching.jpg"></div>
+        <div class="photo-card reveal r3" style="left:1305px; top:100px; width:245px; height:300px;"><img alt="Gus Garza en panel" src="assets/gus-panel-speaking.jpg" style="object-position:58% 38%;"></div>
+        <div class="photo-card reveal r4" style="left:1575px; top:100px; width:245px; height:300px;"><img alt="Retrato de Gus Garza" src="assets/gus-studio-portrait.jpg" style="object-position:50% 36%;"></div>
+        <div class="photo-card reveal r5" style="left:785px; top:425px; width:1035px; height:215px;"><img alt="Gus Garza guiando un taller de IA" src="assets/gus-table-training-wide.jpg" style="object-position:54% 45%;"></div>
+
+        <div class="block reveal r3 paragraph" style="left:785px; top:700px; width:485px;"><p><strong>Gus Garza</strong></p><p>Creative technologist, productor y fundador trabajando en IA aplicada a video, diseño, mundos 3D, juegos, automatización creativa y producción audiovisual.</p></div>
+        <div class="block rule-y reveal r4" style="left:1320px; top:700px; height:190px;"></div>
+        <div class="block reveal r5 paragraph-small" style="left:1360px; top:700px; width:460px; display:grid; grid-template-columns:1fr; gap:15px;">
+          <div class="check"><div><strong>Campañas internacionales</strong><br>Conceptos, piezas visuales y sistemas de producción para marcas y proyectos globales.</div></div>
+          <div class="check"><div><strong>IA generativa aplicada</strong><br>Prompting, imagen, video, renders, workflows y consistencia visual.</div></div>
           <div class="check"><div><strong>Charlas y talleres</strong><br>Capacitaciones prácticas para equipos creativos, técnicos y estratégicos.</div></div>
-          <div class="check"><div><strong>Producción real</strong><br>Enfoque en resultados usables: no teoría pesada, sino herramientas aplicadas a proyectos concretos.</div></div>
         </div>
       </section>
 
