@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Propuesta Económica — Capacitación IA Chiapas</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --stage-bg: #e6e6e6;
+      --slide-bg: #ffffff;
+      --ink: #111111;
+      --muted: #4d4d4d;
+      --soft: #cccccc;
+      --line: rgba(17,17,17,.14);
+      --faint: rgba(204,204,204,.30);
+      --font-display: 'Big Shoulders Display', Impact, sans-serif;
+      --font-body: 'Inter', Arial, sans-serif;
+      --ease-out: cubic-bezier(.16,1,.3,1);
+    }
+
+    @keyframes paperBreath { from { opacity: .40; } to { opacity: .58; } }
+    @keyframes markPulse { 0%,100% { opacity: .46; } 50% { opacity: .72; } }
+
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg); }
+    * { box-sizing: border-box; }
+
+    .deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg); }
+    .deck-stage {
+      position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
+      transform-origin: 0 0; background: var(--slide-bg); box-shadow: 0 24px 90px rgba(0,0,0,.16);
+    }
+    .slide {
+      position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block;
+      visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg); color: var(--ink);
+      font-family: var(--font-body); transition: opacity 260ms ease;
+    }
+    .slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+    .slide::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .46;
+      background:
+        linear-gradient(90deg, transparent 0, transparent 98px, rgba(17,17,17,.035) 99px, transparent 100px),
+        linear-gradient(0deg, transparent 0, transparent 98px, rgba(17,17,17,.025) 99px, transparent 100px);
+      background-size: 192px 192px; animation: paperBreath 18s ease-in-out infinite alternate;
+    }
+
+    .block { position: absolute; z-index: 2; }
+    .display-title, .headline-medium, .headline-small, .card-title, .price {
+      font-family: var(--font-display); color: var(--ink); text-transform: uppercase; letter-spacing: -.02em; margin: 0; font-weight: 800;
+    }
+    .display-title { font-size: 154px; line-height: .9; }
+    .headline-medium { font-size: 92px; line-height: .9; }
+    .headline-small { font-size: 58px; line-height: 1; }
+    .card-title { font-size: 32px; line-height: 1.06; }
+    .price { font-size: 168px; line-height: .82; }
+
+    .paragraph { font-size: 25px; line-height: 1.5; letter-spacing: -.01em; color: var(--ink); margin: 0; }
+    .paragraph-small { font-size: 21px; line-height: 1.5; letter-spacing: -.01em; color: #303030; margin: 0; }
+    .micro { font-size: 18px; line-height: 1.45; color: #555; letter-spacing: .01em; }
+    .paragraph strong, .paragraph-small strong { font-weight: 700; color: var(--ink); }
+    .right-meta { font-size: 25px; line-height: 1.5; text-align: right; letter-spacing: -.01em; }
+
+    .rule-x { height: 1px; background: var(--soft); opacity: .72; transform-origin: left center; }
+    .rule-y { width: 1px; background: var(--soft); opacity: .72; transform-origin: top center; }
+    .number { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #999; letter-spacing: -.01em; }
+
+    .image-box {
+      position: absolute; z-index: 2; overflow: hidden; background: #f3f3f3; border: 1px solid rgba(17,17,17,.12);
+      display: flex; align-items: center; justify-content: center; text-align: center; color: #8a8a8a;
+      font-family: var(--font-body); font-size: 18px; line-height: 1.4;
+    }
+    .image-box::before {
+      content: ''; position: absolute; inset: 18px; border: 1px dashed rgba(17,17,17,.20); pointer-events: none;
+    }
+    .image-box .label { position: relative; z-index: 1; max-width: 70%; }
+
+    .tool-pill {
+      border: 1px solid rgba(17,17,17,.14); background: rgba(204,204,204,.16); padding: 16px 18px;
+      font-size: 22px; line-height: 1; font-weight: 700; letter-spacing: -.01em;
+    }
+    .agenda-row { border-top: 1px solid var(--soft); padding-top: 22px; }
+    .agenda-time { font-family: var(--font-display); text-transform: uppercase; font-size: 32px; line-height: 1; font-weight: 800; letter-spacing: -.02em; }
+    .agenda-title { font-weight: 700; font-size: 25px; line-height: 1.2; margin-bottom: 8px; }
+    .check { display: grid; grid-template-columns: 28px 1fr; gap: 16px; align-items: start; }
+    .check::before { content: ''; width: 12px; height: 12px; background: #111; margin-top: 12px; display: block; }
+
+    .reveal { opacity: 0; transform: translateY(20px); filter: blur(5px); transition: opacity 640ms var(--ease-out), transform 640ms var(--ease-out), filter 640ms var(--ease-out); }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); filter: blur(0); }
+    .slide.visible .r1 { transition-delay: 60ms; } .slide.visible .r2 { transition-delay: 130ms; }
+    .slide.visible .r3 { transition-delay: 200ms; } .slide.visible .r4 { transition-delay: 270ms; }
+    .slide.visible .r5 { transition-delay: 340ms; } .slide.visible .r6 { transition-delay: 410ms; }
+    .pulse { animation: markPulse 8s ease-in-out infinite; }
+
+    .deck-controls {
+      position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 1000; display: flex;
+      flex-direction: column; gap: 8px; align-items: center; padding: 8px; border: 1px solid rgba(17,17,17,.10);
+      background: rgba(255,255,255,.72); color: #111; border-radius: 999px; backdrop-filter: blur(18px);
+      font-family: var(--font-body); font-size: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+    .deck-controls button { border: 0; background: rgba(17,17,17,.08); color: #111; padding: 8px 12px; border-radius: 999px; cursor: pointer; transition: transform 180ms var(--ease-out), background 180ms var(--ease-out), color 180ms var(--ease-out); }
+    .deck-controls button:hover, .deck-controls button:focus-visible { background: #111; color: #fff; transform: translateY(-1px); outline: none; }
+    #slideCounter { min-width: 48px; text-align: center; color: rgba(17,17,17,.7); }
+
+    @media print {
+      html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+      .deck-viewport { position: static; overflow: visible; background: #fff; }
+      .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; box-shadow: none; }
+      .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+      .slide:last-child { break-after: auto; page-break-after: auto; }
+      .deck-controls, .review-tools, .export-tools { display: none !important; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="deck-viewport">
+    <main class="deck-stage" id="deckStage">
+      <section class="slide active visible" data-slide="1" aria-label="Portada">
+        <div class="block reveal r1 right-meta" style="left:1430px; top:100px; width:390px;">Propuesta económica<br>Capacitación presencial</div>
+        <div class="block reveal r2 display-title" style="left:100px; top:286px; width:1200px; height:690px; display:flex; align-items:flex-end;"><div>capacitación<br>inteligencia<br>artificial</div></div>
+        <div class="block reveal r3 right-meta" style="left:1430px; top:816px; width:390px;">Gobierno de Chiapas<br>Instructor: Gus Garza<br>06/09/2026</div>
+        <div class="block rule-x reveal r4" style="left:100px; top:982px; width:1720px;"></div>
+      </section>
+
+      <section class="slide" data-slide="2" aria-label="Objetivos de aprendizaje">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:545px;">Objetivos de Aprendizaje</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:760px;"></div>
+        <div class="block reveal r2 paragraph" style="left:785px; top:100px; width:1035px;"><p><strong>Entender el estado actual de la IA</strong></p><p>Identificar qué herramientas ya están cambiando la comunicación, el diseño, la producción audiovisual y la operación diaria de equipos públicos.</p></div>
+        <div class="block rule-x reveal r3" style="left:785px; top:310px; width:1035px;"></div>
+        <div class="block reveal r4 paragraph" style="left:785px; top:365px; width:1035px;"><p><strong>Aprender a producir materiales visuales con IA</strong></p><p>Crear prompts, renders, videos, piezas gráficas y variaciones visuales con herramientas líderes, usando flujos claros y repetibles.</p></div>
+        <div class="block rule-x reveal r5" style="left:785px; top:575px; width:1035px;"></div>
+        <div class="block reveal r6 paragraph" style="left:785px; top:630px; width:1035px;"><p><strong>Salir con una ruta práctica de aplicación</strong></p><p>Definir casos de uso concretos para campañas, comunicación institucional, materiales educativos, presentaciones y prototipos de contenido.</p></div>
+      </section>
+
+      <section class="slide" data-slide="3" aria-label="Perfil del instructor">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Perfil del Instructor</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:770px;"></div>
+        <div class="image-box reveal r2" style="left:785px; top:100px; width:485px; height:330px;"><div class="label">Espacio para foto / retrato del instructor</div></div>
+        <div class="block reveal r3 paragraph" style="left:1325px; top:100px; width:495px;"><p><strong>Gus Garza</strong></p><p>Creative technologist, productor y fundador trabajando en IA aplicada a video, diseño, mundos 3D, juegos, automatización creativa y producción audiovisual.</p></div>
+        <div class="block rule-x reveal r4" style="left:785px; top:500px; width:1035px;"></div>
+        <div class="block reveal r5 paragraph-small" style="left:785px; top:555px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:34px 54px;">
+          <div class="check"><div><strong>Campañas internacionales</strong><br>Experiencia creando conceptos, piezas visuales y sistemas de producción para marcas y proyectos globales.</div></div>
+          <div class="check"><div><strong>IA generativa aplicada</strong><br>Especialización en prompting, modelos de imagen, video, renders, workflows y consistencia visual.</div></div>
+          <div class="check"><div><strong>Charlas y talleres</strong><br>Capacitaciones prácticas para equipos creativos, técnicos y estratégicos.</div></div>
+          <div class="check"><div><strong>Producción real</strong><br>Enfoque en resultados usables: no teoría pesada, sino herramientas aplicadas a proyectos concretos.</div></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4" aria-label="Agenda de capacitación">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Agenda de la Capacitación</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Sesión presencial inicial de <strong>3 horas</strong>, diseñada como introducción ejecutiva y taller práctico para validar aplicaciones con el equipo.</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:1fr; gap:30px;">
+          <div class="agenda-row"><div class="agenda-time">00:00 — 00:30</div><div class="agenda-title">Estado actual de la inteligencia artificial</div><div class="paragraph-small">Modelos líderes, aplicaciones reales, oportunidades para gobierno, comunicación y producción de contenido.</div></div>
+          <div class="agenda-row"><div class="agenda-time">00:30 — 01:15</div><div class="agenda-title">Prompting con GPT y pensamiento estructurado</div><div class="paragraph-small">Cómo pedir, iterar, corregir, resumir, generar ideas y convertir objetivos en instrucciones claras.</div></div>
+          <div class="agenda-row"><div class="agenda-time">01:15 — 02:10</div><div class="agenda-title">Renders, diseño visual e imagen generativa</div><div class="paragraph-small">Creación de conceptos visuales, piezas de campaña, moodboards, variaciones y dirección de arte.</div></div>
+          <div class="agenda-row"><div class="agenda-time">02:10 — 03:00</div><div class="agenda-title">Video con IA y flujo de producción</div><div class="paragraph-small">Uso de modelos líderes para video, generación de clips, iteración visual y armado de entregables.</div></div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5" aria-label="Herramientas">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Herramientas que Utilizaremos</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="image-box reveal r2" style="left:785px; top:100px; width:1035px; height:360px;"><div class="label">Espacio para captura / collage de interfaz<br>PHATTY / Phatty Acid + modelos líderes</div></div>
+        <div class="block reveal r3 paragraph" style="left:785px; top:520px; width:1035px;"><p><strong>Un flujo centralizado para explorar modelos líderes</strong></p><p>La capacitación usará el ecosistema de PHATTY / Phatty Acid como entorno práctico para mostrar generación visual, video, prompting y flujos de producción.</p></div>
+        <div class="block reveal r4" style="left:785px; top:725px; width:1035px; display:flex; flex-wrap:wrap; gap:14px;">
+          <div class="tool-pill">GPT Prompting</div><div class="tool-pill">Kling</div><div class="tool-pill">Veo</div><div class="tool-pill">Sora</div><div class="tool-pill">Imagen</div><div class="tool-pill">Video IA</div><div class="tool-pill">Renders</div><div class="tool-pill">Diseño</div><div class="tool-pill">Flujos creativos</div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="6" aria-label="Metodología">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Metodología de Trabajo</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:repeat(3,1fr); gap:34px;">
+          <div><div class="number">01</div><div class="card-title" style="margin-top:14px;">Demostración</div><div class="paragraph-small" style="margin-top:22px;">Explicación clara de herramientas, posibilidades, límites y mejores prácticas.</div></div>
+          <div><div class="number">02</div><div class="card-title" style="margin-top:14px;">Ejercicios prácticos</div><div class="paragraph-small" style="margin-top:22px;">Los participantes prueban prompts, generan variaciones y entienden cómo mejorar resultados.</div></div>
+          <div><div class="number">03</div><div class="card-title" style="margin-top:14px;">Taller guiado</div><div class="paragraph-small" style="margin-top:22px;">Aplicación directa a casos de comunicación, diseño, video y materiales institucionales.</div></div>
+        </div>
+        <div class="block rule-x reveal r3" style="left:785px; top:455px; width:1035px;"></div>
+        <div class="block reveal r4 paragraph" style="left:785px; top:515px; width:1035px;"><p><strong>Seguimiento posterior incluido</strong></p><p>Además de la sesión presencial, se incluyen <strong>3 reuniones por Zoom de 1 hora</strong>, una por semana, para resolver dudas, revisar avances y aterrizar casos de uso del equipo.</p></div>
+        <div class="image-box reveal r5" style="left:785px; top:755px; width:1035px; height:135px;"><div class="label">Espacio para diagrama: Sesión presencial → Semana 1 → Semana 2 → Semana 3</div></div>
+      </section>
+
+      <section class="slide" data-slide="7" aria-label="Inversión y licenciamiento">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Inversión y Licenciamiento</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2 price" style="left:785px; top:100px; width:1035px;">$120,000</div>
+        <div class="block reveal r2 paragraph" style="left:790px; top:250px; width:500px;"><p><strong>más IVA</strong></p></div>
+        <div class="block rule-x reveal r3" style="left:785px; top:350px; width:1035px;"></div>
+        <div class="block reveal r4 paragraph-small" style="left:785px; top:410px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:38px 56px;">
+          <div class="check"><div><strong>Sesión presencial de 3 horas</strong><br>Capacitación inicial para el equipo en Chiapas.</div></div>
+          <div class="check"><div><strong>3 sesiones Zoom de seguimiento</strong><br>Una hora por semana para acompañamiento y dudas.</div></div>
+          <div class="check"><div><strong>20,000 generation tokens incluidos</strong><br>Bolsa inicial para generación de imágenes, videos y pruebas dentro del flujo.</div></div>
+          <div class="check"><div><strong>Plan recomendado</strong><br>Uso inicial controlado para validar casos, medir valor y definir escalamiento posterior.</div></div>
+        </div>
+        <div class="block reveal r5 paragraph" style="left:785px; top:785px; width:1035px;"><p><strong>Retorno esperado:</strong> acelerar producción de materiales visuales, reducir tiempos de iteración y habilitar al equipo para prototipar contenido sin depender de procesos largos.</p></div>
+      </section>
+
+      <section class="slide" data-slide="8" aria-label="Cierre">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Siguiente Paso</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2 display-title" style="left:785px; top:100px; width:1035px; font-size:112px; line-height:.9;">validar fecha<br>y equipo<br>participante</div>
+        <div class="block rule-x reveal r3" style="left:785px; top:505px; width:1035px;"></div>
+        <div class="block reveal r4 paragraph" style="left:785px; top:565px; width:1035px;"><p>Una vez confirmada la fecha, se prepara el contenido final, ejemplos visuales y ejercicios prácticos alineados a las necesidades del equipo del Gobierno de Chiapas.</p></div>
+        <div class="block reveal r5 paragraph-small" style="left:785px; top:760px; width:1035px; display:grid; grid-template-columns:repeat(3,1fr); gap:34px;">
+          <div><strong>01</strong><br>Confirmar fecha y lugar</div>
+          <div><strong>02</strong><br>Definir perfil de participantes</div>
+          <div><strong>03</strong><br>Preparar casos de uso prioritarios</div>
+        </div>
+        <div class="block rule-x reveal r6" style="left:100px; top:982px; width:1720px;"></div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="deck-controls" aria-label="Presentation controls">
+    <button id="prevSlide" type="button">Prev</button>
+    <span id="slideCounter">1 / 8</span>
+    <button id="nextSlide" type="button">Next</button>
+  </nav>
+
+  <script>
+    class SlideDeck {
+      constructor() {
+        this.stage = document.getElementById('deckStage');
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.storageKey = `${location.pathname}:chiapasProposalSlide`;
+        this.current = Number(localStorage.getItem(this.storageKey) || 0);
+        this.current = Math.max(0, Math.min(this.current, this.slides.length - 1));
+        this.counter = document.getElementById('slideCounter');
+        this.prevButton = document.getElementById('prevSlide');
+        this.nextButton = document.getElementById('nextSlide');
+        this.wheelLocked = false;
+        this.scaleStage(); this.bindEvents(); this.show(this.current);
+      }
+      scaleStage() {
+        const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+        const x = (window.innerWidth - 1920 * scale) / 2;
+        const y = (window.innerHeight - 1080 * scale) / 2;
+        this.stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+      }
+      show(index) {
+        this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => { slide.classList.toggle('active', i === this.current); slide.classList.toggle('visible', i === this.current); });
+        if (this.counter) this.counter.textContent = `${this.current + 1} / ${this.slides.length}`;
+        localStorage.setItem(this.storageKey, String(this.current));
+      }
+      next() { this.show(this.current + 1); }
+      previous() { this.show(this.current - 1); }
+      handleWheel(event) {
+        event.preventDefault();
+        const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+        if (Math.abs(delta) < 18 || this.wheelLocked) return;
+        delta > 0 ? this.next() : this.previous();
+        this.wheelLocked = true; window.setTimeout(() => { this.wheelLocked = false; }, 640);
+      }
+      bindEvents() {
+        window.addEventListener('resize', () => this.scaleStage());
+        document.addEventListener('keydown', (event) => {
+          if (['ArrowRight', ' ', 'PageDown'].includes(event.key)) { event.preventDefault(); this.next(); }
+          if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); this.previous(); }
+          if (event.key === 'Home') { event.preventDefault(); this.show(0); }
+          if (event.key === 'End') { event.preventDefault(); this.show(this.slides.length - 1); }
+        });
+        document.addEventListener('wheel', (event) => this.handleWheel(event), { passive: false });
+        if (this.prevButton) this.prevButton.addEventListener('click', () => this.previous());
+        if (this.nextButton) this.nextButton.addEventListener('click', () => this.next());
+        let startX = null;
+        document.addEventListener('touchstart', (event) => { startX = event.touches[0].clientX; }, { passive: true });
+        document.addEventListener('touchend', (event) => {
+          if (startX === null) return;
+          const delta = event.changedTouches[0].clientX - startX;
+          if (Math.abs(delta) > 60) delta < 0 ? this.next() : this.previous();
+          startX = null;
+        }, { passive: true });
+      }
+    }
+    window.addEventListener('DOMContentLoaded', () => { window.deck = new SlideDeck(); });
+  </script>
+</body>
+</html>
