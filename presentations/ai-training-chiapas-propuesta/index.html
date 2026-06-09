@@ -108,7 +108,73 @@
       height: 100%;
       display: block;
       object-fit: contain;
-      object-position: center center;
+    }
+
+    .logo-row {
+      position: absolute;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+    .logo-card {
+      height: 86px;
+      border: 1px solid rgba(17,17,17,.12);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 22px;
+    }
+    .logo-card img {
+      max-width: 100%;
+      max-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .method-loop {
+      position: absolute;
+      z-index: 2;
+      width: 1035px;
+      height: 315px;
+      border-top: 1px solid var(--soft);
+      border-bottom: 1px solid var(--soft);
+    }
+    .loop-node {
+      position: absolute;
+      width: 205px;
+      height: 108px;
+      border: 1px solid rgba(17,17,17,.16);
+      background: rgba(204,204,204,.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: -.015em;
+      font-size: 29px;
+      line-height: 1;
+    }
+    .loop-arrow {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 44px;
+      line-height: 1;
+      color: #111;
+    }
+    .loop-note {
+      position: absolute;
+      left: 0;
+      bottom: 22px;
+      width: 1035px;
+      font-size: 20px;
+      line-height: 1.4;
+      color: #444;
     }
 
     .tool-pill {
@@ -202,9 +268,16 @@
       <section class="slide" data-slide="5" aria-label="Herramientas">
         <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Herramientas que Utilizaremos</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="tool-visual reveal r2" style="left:785px; top:100px; width:1035px; height:440px;"><img alt="PHATTY / Phatty Acid platform interface with AI model providers" src="assets/phatty-platform-tools.jpg"></div>
-        <div class="block reveal r3 paragraph" style="left:785px; top:585px; width:1035px;"><p><strong>PHATTY / Phatty Acid como centro de producción</strong></p><p>Usaremos esta plataforma para trabajar con modelos líderes en un solo flujo: prompting, generación visual, video, renders, edición y armado de materiales.</p></div>
-        <div class="block reveal r4" style="left:785px; top:790px; width:1035px; display:flex; flex-wrap:wrap; gap:14px;">
+        <div class="tool-visual reveal r2" style="left:785px; top:100px; width:1035px; height:350px;"><img alt="PHATTY / Phatty Acid platform interface with AI model providers" src="assets/phatty-platform-tools.jpg"></div>
+        <div class="block reveal r3 card-title" style="left:785px; top:492px; width:1035px; font-size:28px;">Equipo de Marketing que utilizan:</div>
+        <div class="logo-row reveal r4" style="left:785px; top:540px; width:1035px;">
+          <div class="logo-card"><img alt="CEMEX" src="assets/logo-cemex.jpg"></div>
+          <div class="logo-card"><img alt="GNC Live Well" src="assets/logo-gnc.jpg"></div>
+          <div class="logo-card"><img alt="Vitro" src="assets/logo-vitro.jpg"></div>
+          <div class="logo-card"><img alt="Mary Kay" src="assets/logo-mary-kay.jpg"></div>
+        </div>
+        <div class="block reveal r5 paragraph" style="left:785px; top:675px; width:1035px;"><p><strong>PHATTY / Phatty Acid como centro de producción</strong></p><p>Usaremos esta plataforma para trabajar con modelos líderes en un solo flujo: prompting, generación visual, video, renders, edición y armado de materiales.</p></div>
+        <div class="block reveal r6" style="left:785px; top:872px; width:1035px; display:flex; flex-wrap:wrap; gap:14px;">
           <div class="tool-pill">GPT Prompting</div><div class="tool-pill">Kling</div><div class="tool-pill">Veo</div><div class="tool-pill">Sora</div><div class="tool-pill">Imagen</div><div class="tool-pill">Video IA</div><div class="tool-pill">Renders</div><div class="tool-pill">Diseño</div><div class="tool-pill">Flujos creativos</div>
         </div>
       </section>
@@ -217,9 +290,19 @@
           <div><div class="number">02</div><div class="card-title" style="margin-top:14px;">Ejercicios prácticos</div><div class="paragraph-small" style="margin-top:22px;">Los participantes prueban prompts, generan variaciones y entienden cómo mejorar resultados.</div></div>
           <div><div class="number">03</div><div class="card-title" style="margin-top:14px;">Taller guiado</div><div class="paragraph-small" style="margin-top:22px;">Aplicación directa a casos de comunicación, diseño, video y materiales institucionales.</div></div>
         </div>
-        <div class="block rule-x reveal r3" style="left:785px; top:455px; width:1035px;"></div>
-        <div class="block reveal r4 paragraph" style="left:785px; top:515px; width:1035px;"><p><strong>Seguimiento posterior incluido</strong></p><p>Además de la sesión presencial, se incluyen <strong>3 reuniones por Zoom de 1 hora</strong>, una por semana, para resolver dudas, revisar avances y aterrizar casos de uso del equipo.</p></div>
-        <div class="image-box reveal r5" style="left:785px; top:755px; width:1035px; height:135px;"><div class="label">Espacio para diagrama: Sesión presencial → Semana 1 → Semana 2 → Semana 3</div></div>
+        <div class="block rule-x reveal r3" style="left:785px; top:430px; width:1035px;"></div>
+        <div class="block reveal r4 paragraph" style="left:785px; top:485px; width:1035px;"><p><strong>Seguimiento posterior incluido</strong></p><p>Además de la sesión presencial, se incluyen <strong>3 reuniones por Zoom de 1 hora</strong>, una por semana, para repetir el ciclo: demostración, ejercicio, dudas y ajuste.</p></div>
+        <div class="method-loop reveal r5" style="left:785px; top:680px; height:230px;">
+          <div class="loop-node" style="left:0; top:48px; width:185px; height:82px;">Demo</div>
+          <div class="loop-arrow" style="left:210px; top:68px;">→</div>
+          <div class="loop-node" style="left:285px; top:48px; width:185px; height:82px;">Ejercicio</div>
+          <div class="loop-arrow" style="left:495px; top:68px;">→</div>
+          <div class="loop-node" style="left:570px; top:48px; width:185px; height:82px;">Dudas</div>
+          <div class="loop-arrow" style="left:780px; top:68px;">→</div>
+          <div class="loop-node" style="left:850px; top:48px; width:185px; height:82px;">Ajuste</div>
+          <div class="loop-arrow" style="left:968px; top:118px; font-size:54px;">↺</div>
+          <div class="loop-note" style="top:165px; bottom:auto;">Zoom semanal: se revisan avances, se resuelven bloqueos y el loop se repite con nuevos casos reales del equipo.</div>
+        </div>
       </section>
 
       <section class="slide" data-slide="7" aria-label="Inversión y licenciamiento">
