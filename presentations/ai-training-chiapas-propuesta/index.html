@@ -93,6 +93,24 @@
     }
     .slide.visible .photo-card img { transform: scale(1.035); }
 
+    .tool-visual {
+      position: absolute;
+      z-index: 2;
+      overflow: hidden;
+      background: #0d0d13;
+      border: 1px solid rgba(17,17,17,.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tool-visual img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center center;
+    }
+
     .tool-pill {
       border: 1px solid rgba(17,17,17,.14); background: rgba(204,204,204,.16); padding: 16px 18px;
       font-size: 22px; line-height: 1; font-weight: 700; letter-spacing: -.01em;
@@ -184,9 +202,9 @@
       <section class="slide" data-slide="5" aria-label="Herramientas">
         <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Herramientas que Utilizaremos</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="image-box reveal r2" style="left:785px; top:100px; width:1035px; height:360px;"><div class="label">Espacio para captura / collage de interfaz<br>PHATTY / Phatty Acid + modelos líderes</div></div>
-        <div class="block reveal r3 paragraph" style="left:785px; top:520px; width:1035px;"><p><strong>Un flujo centralizado para explorar modelos líderes</strong></p><p>La capacitación usará el ecosistema de PHATTY / Phatty Acid como entorno práctico para mostrar generación visual, video, prompting y flujos de producción.</p></div>
-        <div class="block reveal r4" style="left:785px; top:725px; width:1035px; display:flex; flex-wrap:wrap; gap:14px;">
+        <div class="tool-visual reveal r2" style="left:785px; top:100px; width:1035px; height:440px;"><img alt="PHATTY / Phatty Acid platform interface with AI model providers" src="assets/phatty-platform-tools.jpg"></div>
+        <div class="block reveal r3 paragraph" style="left:785px; top:585px; width:1035px;"><p><strong>PHATTY / Phatty Acid como centro de producción</strong></p><p>Usaremos esta plataforma para trabajar con modelos líderes en un solo flujo: prompting, generación visual, video, renders, edición y armado de materiales.</p></div>
+        <div class="block reveal r4" style="left:785px; top:790px; width:1035px; display:flex; flex-wrap:wrap; gap:14px;">
           <div class="tool-pill">GPT Prompting</div><div class="tool-pill">Kling</div><div class="tool-pill">Veo</div><div class="tool-pill">Sora</div><div class="tool-pill">Imagen</div><div class="tool-pill">Video IA</div><div class="tool-pill">Renders</div><div class="tool-pill">Diseño</div><div class="tool-pill">Flujos creativos</div>
         </div>
       </section>
