@@ -211,6 +211,8 @@
       .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
       .slide:last-child { break-after: auto; page-break-after: auto; }
       .deck-controls, .review-tools, .export-tools { display: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; filter: none !important; }
+      .slide::after { animation: none !important; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } }
   </style>
