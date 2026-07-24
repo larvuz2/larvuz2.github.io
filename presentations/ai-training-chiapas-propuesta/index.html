@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Propuesta Económica — Capacitación IA Chiapas</title>
+  <title>Implementación del Centro de IA — Gobierno de Chiapas</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -49,11 +49,11 @@
     .display-title, .headline-medium, .headline-small, .card-title, .price {
       font-family: var(--font-display); color: var(--ink); text-transform: uppercase; letter-spacing: -.02em; margin: 0; font-weight: 800;
     }
-    .display-title { font-size: 154px; line-height: .9; }
+    .display-title { font-size: 146px; line-height: .9; }
     .headline-medium { font-size: 92px; line-height: .9; }
     .headline-small { font-size: 58px; line-height: 1; }
     .card-title { font-size: 32px; line-height: 1.06; }
-    .price { font-size: 168px; line-height: .82; }
+    .price { font-size: 154px; line-height: .82; }
 
     .paragraph { font-size: 25px; line-height: 1.5; letter-spacing: -.01em; color: var(--ink); margin: 0; }
     .paragraph-small { font-size: 21px; line-height: 1.5; letter-spacing: -.01em; color: #303030; margin: 0; }
@@ -65,127 +65,31 @@
     .rule-y { width: 1px; background: var(--soft); opacity: .72; transform-origin: top center; }
     .number { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: #999; letter-spacing: -.01em; }
 
-    .image-box {
-      position: absolute; z-index: 2; overflow: hidden; background: #f3f3f3; border: 1px solid rgba(17,17,17,.12);
-      display: flex; align-items: center; justify-content: center; text-align: center; color: #8a8a8a;
-      font-family: var(--font-body); font-size: 18px; line-height: 1.4;
-    }
-    .image-box::before {
-      content: ''; position: absolute; inset: 18px; border: 1px dashed rgba(17,17,17,.20); pointer-events: none;
-    }
-    .image-box .label { position: relative; z-index: 1; max-width: 70%; }
-
-    .photo-card {
-      position: absolute;
-      z-index: 2;
-      overflow: hidden;
-      background: #eeeeee;
-      border: 1px solid rgba(17,17,17,.12);
-    }
-    .photo-card img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-      filter: grayscale(.08) saturate(.92) contrast(1.04);
-      transform: scale(1.01);
-      transition: transform 600ms var(--ease-out), filter 600ms var(--ease-out);
-    }
+    .photo-card { position: absolute; z-index: 2; overflow: hidden; background: #eeeeee; border: 1px solid rgba(17,17,17,.12); }
+    .photo-card img { width: 100%; height: 100%; display: block; object-fit: cover; filter: grayscale(.08) saturate(.92) contrast(1.04); transform: scale(1.01); transition: transform 600ms var(--ease-out), filter 600ms var(--ease-out); }
     .slide.visible .photo-card img { transform: scale(1.035); }
+    .tool-visual { position: absolute; z-index: 2; overflow: hidden; background: #0d0d13; border: 1px solid rgba(17,17,17,.14); display: flex; align-items: center; justify-content: center; }
+    .tool-visual img { width: 100%; height: 100%; display: block; object-fit: contain; }
+    .logo-row { position: absolute; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    .logo-card { height: 86px; border: 1px solid rgba(17,17,17,.12); background: #fff; display: flex; align-items: center; justify-content: center; padding: 18px 22px; }
+    .logo-card img { max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: contain; display: block; }
 
-    .tool-visual {
-      position: absolute;
-      z-index: 2;
-      overflow: hidden;
-      background: #0d0d13;
-      border: 1px solid rgba(17,17,17,.14);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .tool-visual img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: contain;
-    }
-
-    .logo-row {
-      position: absolute;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
-    }
-    .logo-card {
-      height: 86px;
-      border: 1px solid rgba(17,17,17,.12);
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 18px 22px;
-    }
-    .logo-card img {
-      max-width: 100%;
-      max-height: 100%;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
-
-    .method-loop {
-      position: absolute;
-      z-index: 2;
-      width: 1035px;
-      height: 315px;
-      border-top: 1px solid var(--soft);
-      border-bottom: 1px solid var(--soft);
-    }
-    .loop-node {
-      position: absolute;
-      width: 205px;
-      height: 108px;
-      border: 1px solid rgba(17,17,17,.16);
-      background: rgba(204,204,204,.14);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-family: var(--font-display);
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: -.015em;
-      font-size: 29px;
-      line-height: 1;
-    }
-    .loop-arrow {
-      position: absolute;
-      font-family: var(--font-display);
-      font-size: 44px;
-      line-height: 1;
-      color: #111;
-    }
-    .loop-note {
-      position: absolute;
-      left: 0;
-      bottom: 22px;
-      width: 1035px;
-      font-size: 20px;
-      line-height: 1.4;
-      color: #444;
-    }
-
-    .tool-pill {
-      border: 1px solid rgba(17,17,17,.14); background: rgba(204,204,204,.16); padding: 16px 18px;
-      font-size: 22px; line-height: 1; font-weight: 700; letter-spacing: -.01em;
-    }
-    .agenda-row { border-top: 1px solid var(--soft); padding-top: 22px; }
+    .tool-pill { border: 1px solid rgba(17,17,17,.14); background: rgba(204,204,204,.16); padding: 16px 18px; font-size: 22px; line-height: 1; font-weight: 700; letter-spacing: -.01em; }
+    .agenda-row { border-top: 1px solid var(--soft); padding-top: 18px; }
     .agenda-time { font-family: var(--font-display); text-transform: uppercase; font-size: 32px; line-height: 1; font-weight: 800; letter-spacing: -.02em; }
     .agenda-title { font-weight: 700; font-size: 25px; line-height: 1.2; margin-bottom: 8px; }
     .check { display: grid; grid-template-columns: 28px 1fr; gap: 16px; align-items: start; }
-    .check::before { content: ''; width: 12px; height: 12px; background: #111; margin-top: 12px; display: block; }
+    .check::before { content: '✓'; width: 22px; height: 22px; margin-top: 5px; display: block; font-weight: 800; font-size: 22px; line-height: 1; }
+    .dot { display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: start; }
+    .dot::before { content: ''; width: 9px; height: 9px; background: #111; margin-top: 12px; display: block; }
+    .scope-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:34px; }
+    .scope-card { border-top:1px solid var(--soft); padding-top:22px; min-height:215px; }
+    .scope-card .card-title { margin-bottom:18px; }
+    .table-row { display:grid; grid-template-columns: 1.15fr .85fr; gap:24px; border-top:1px solid var(--soft); padding:18px 0; align-items:start; }
+    .amount { font-family: var(--font-display); font-size: 45px; line-height: .95; font-weight:800; letter-spacing:-.02em; text-transform:uppercase; text-align:right; }
+    .phase-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+    .phase { border-top:1px solid var(--soft); padding-top:20px; min-height:510px; }
+    .phase .agenda-time { margin-bottom:24px; }
 
     .reveal { opacity: 0; transform: translateY(20px); filter: blur(5px); transition: opacity 640ms var(--ease-out), transform 640ms var(--ease-out), filter 640ms var(--ease-out); }
     .slide.visible .reveal { opacity: 1; transform: translateY(0); filter: blur(0); }
@@ -194,12 +98,7 @@
     .slide.visible .r5 { transition-delay: 340ms; } .slide.visible .r6 { transition-delay: 410ms; }
     .pulse { animation: markPulse 8s ease-in-out infinite; }
 
-    .deck-controls {
-      position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 1000; display: flex;
-      flex-direction: column; gap: 8px; align-items: center; padding: 8px; border: 1px solid rgba(17,17,17,.10);
-      background: rgba(255,255,255,.72); color: #111; border-radius: 999px; backdrop-filter: blur(18px);
-      font-family: var(--font-body); font-size: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    }
+    .deck-controls { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 1000; display: flex; flex-direction: column; gap: 8px; align-items: center; padding: 8px; border: 1px solid rgba(17,17,17,.10); background: rgba(255,255,255,.72); color: #111; border-radius: 999px; backdrop-filter: blur(18px); font-family: var(--font-body); font-size: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
     .deck-controls button { border: 0; background: rgba(17,17,17,.08); color: #111; padding: 8px 12px; border-radius: 999px; cursor: pointer; transition: transform 180ms var(--ease-out), background 180ms var(--ease-out), color 180ms var(--ease-out); }
     .deck-controls button:hover, .deck-controls button:focus-visible { background: #111; color: #fff; transform: translateY(-1px); outline: none; }
     #slideCounter { min-width: 48px; text-align: center; color: rgba(17,17,17,.7); }
@@ -221,117 +120,148 @@
   <div class="deck-viewport">
     <main class="deck-stage" id="deckStage">
       <section class="slide active visible" data-slide="1" aria-label="Portada">
-        <div class="block reveal r1 right-meta" style="left:1430px; top:100px; width:390px;">Propuesta económica<br>Capacitación presencial</div>
-        <div class="block reveal r2 display-title" style="left:100px; top:286px; width:1200px; height:690px; display:flex; align-items:flex-end;"><div>capacitación<br>inteligencia<br>artificial</div></div>
-        <div class="block reveal r3 right-meta" style="left:1430px; top:816px; width:390px;">Gobierno de Chiapas<br>Instructor: Gus Garza<br>06/09/2026</div>
+        <div class="block reveal r1 right-meta" style="left:1395px; top:100px; width:425px;">Propuesta integral<br>Implementación tecnológica</div>
+        <div class="block reveal r2 display-title" style="left:100px; top:250px; width:1220px; height:725px; display:flex; align-items:flex-end;"><div>centro de<br>inteligencia<br>artificial</div></div>
+        <div class="block reveal r3 paragraph-small" style="left:785px; top:168px; width:520px; display:grid; grid-template-columns:1fr 1fr; gap:12px 26px;">
+          <div class="dot"><div>Infraestructura</div></div><div class="dot"><div>Instalación</div></div>
+          <div class="dot"><div>Software</div></div><div class="dot"><div>Capacitación</div></div>
+          <div class="dot"><div>Puesta en marcha</div></div>
+        </div>
+        <div class="block reveal r3 right-meta" style="left:1430px; top:816px; width:390px;">Gobierno de Chiapas<br>Gus Garza / PHATTY<br>2026</div>
         <div class="block rule-x reveal r4" style="left:100px; top:982px; width:1720px;"></div>
       </section>
 
-      <section class="slide" data-slide="2" aria-label="Objetivos de aprendizaje">
-        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:545px;">Objetivos de Aprendizaje</div>
-        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:760px;"></div>
-        <div class="block reveal r2 paragraph" style="left:785px; top:100px; width:1035px;"><p><strong>Entender el estado actual de la IA</strong></p><p>Identificar qué herramientas ya están cambiando la comunicación, el diseño, la producción audiovisual y la operación diaria de equipos públicos.</p></div>
-        <div class="block rule-x reveal r3" style="left:785px; top:310px; width:1035px;"></div>
-        <div class="block reveal r4 paragraph" style="left:785px; top:365px; width:1035px;"><p><strong>Aprender a producir materiales visuales con IA</strong></p><p>Crear prompts, renders, videos, piezas gráficas y variaciones visuales con herramientas líderes, usando flujos claros y repetibles.</p></div>
-        <div class="block rule-x reveal r5" style="left:785px; top:575px; width:1035px;"></div>
-        <div class="block reveal r6 paragraph" style="left:785px; top:630px; width:1035px;"><p><strong>Salir con una ruta práctica de aplicación</strong></p><p>Definir casos de uso concretos para campañas, comunicación institucional, materiales educativos, presentaciones y prototipos de contenido.</p></div>
+      <section class="slide" data-slide="2" aria-label="Objetivos del proyecto">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:545px;">Objetivos del Proyecto</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">El objetivo ya no es únicamente aprender IA. Es dejar una capacidad instalada para que el equipo pueda operar desde el primer día.</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2 paragraph" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:42px 60px;">
+          <div class="check"><div><strong>Implementar una estación profesional de IA.</strong><br>Equipo, sistema, software y plataforma listos para producción institucional.</div></div>
+          <div class="check"><div><strong>Dejar todos los equipos listos para operar.</strong><br>Instalación, configuración, drivers, cuentas, red y utilerías necesarias.</div></div>
+          <div class="check"><div><strong>Capacitar al personal en flujos modernos de IA.</strong><br>Prompting, imagen, video, automatización y casos reales aplicados al gobierno.</div></div>
+          <div class="check"><div><strong>Entregar un sistema funcional desde el primer día.</strong><br>El equipo recibe una base operativa, no solo una sesión teórica.</div></div>
+        </div>
       </section>
 
       <section class="slide" data-slide="3" aria-label="Perfil del instructor">
         <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Perfil del Instructor</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-
-        <div class="photo-card reveal r2" style="left:785px; top:100px; width:495px; height:300px;"><img alt="Gus Garza impartiendo una capacitación" src="assets/gus-workshop-teaching.jpg"></div>
-        <div class="photo-card reveal r3" style="left:1305px; top:100px; width:245px; height:300px;"><img alt="Gus Garza en panel" src="assets/gus-panel-speaking.jpg" style="object-position:58% 38%;"></div>
-        <div class="photo-card reveal r4" style="left:1575px; top:100px; width:245px; height:300px;"><img alt="Retrato de Gus Garza" src="assets/gus-studio-portrait.jpg" style="object-position:50% 36%;"></div>
-        <div class="photo-card reveal r5" style="left:785px; top:425px; width:1035px; height:215px;"><img alt="Gus Garza guiando una sesión de entrenamiento de IA" src="assets/gus-ai-training-room-wide.jpg" style="object-position:50% 15%;"></div>
-
-        <div class="block reveal r3 paragraph" style="left:785px; top:700px; width:485px;"><p><strong>Gus Garza</strong></p><p>Creative technologist, productor y fundador trabajando en IA aplicada a video, diseño, mundos 3D, juegos, automatización creativa y producción audiovisual.</p></div>
-        <div class="block rule-y reveal r4" style="left:1320px; top:700px; height:190px;"></div>
-        <div class="block reveal r5 paragraph-small" style="left:1360px; top:700px; width:460px; display:grid; grid-template-columns:1fr; gap:15px;">
-          <div class="check"><div><strong>Campañas internacionales</strong><br>Conceptos, piezas visuales y sistemas de producción para marcas y proyectos globales.</div></div>
-          <div class="check"><div><strong>IA generativa aplicada</strong><br>Prompting, imagen, video, renders, workflows y consistencia visual.</div></div>
-          <div class="check"><div><strong>Charlas y talleres</strong><br>Capacitaciones prácticas para equipos creativos, técnicos y estratégicos.</div></div>
+        <div class="photo-card reveal r2" style="left:785px; top:100px; width:495px; height:285px;"><img alt="Gus Garza impartiendo una capacitación" src="assets/gus-workshop-teaching.jpg"></div>
+        <div class="photo-card reveal r3" style="left:1305px; top:100px; width:245px; height:285px;"><img alt="Gus Garza en panel" src="assets/gus-panel-speaking.jpg" style="object-position:58% 38%;"></div>
+        <div class="photo-card reveal r4" style="left:1575px; top:100px; width:245px; height:285px;"><img alt="Retrato de Gus Garza" src="assets/gus-studio-portrait.jpg" style="object-position:50% 36%;"></div>
+        <div class="block reveal r3 paragraph" style="left:785px; top:430px; width:485px;"><p><strong>Gus Garza</strong></p><p>Creative technologist, productor y fundador trabajando en IA aplicada a video, diseño, mundos 3D, juegos, automatización creativa y producción audiovisual.</p></div>
+        <div class="block rule-y reveal r4" style="left:1320px; top:430px; height:455px;"></div>
+        <div class="block reveal r5 paragraph-small" style="left:1360px; top:430px; width:460px;">
+          <p><strong>Responsable de implementación tecnológica</strong></p>
+          <div style="display:grid; gap:12px; margin-top:22px;">
+            <div class="check"><div>Diseño del flujo de trabajo.</div></div>
+            <div class="check"><div>Selección de hardware.</div></div>
+            <div class="check"><div>Instalación y configuración.</div></div>
+            <div class="check"><div>Optimización para IA.</div></div>
+            <div class="check"><div>Capacitación aplicada al equipo.</div></div>
+          </div>
         </div>
       </section>
 
-      <section class="slide" data-slide="4" aria-label="Agenda de capacitación">
-        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Agenda de la Capacitación</div>
-        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Sesión presencial inicial de <strong>3 horas</strong>, diseñada como introducción ejecutiva y taller práctico para validar aplicaciones con el equipo.</div>
+      <section class="slide" data-slide="4" aria-label="Plan de implementación">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Plan de Implementación</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Proyecto llave en mano: entrega de infraestructura, instalación, software, capacitación presencial y arranque operativo.</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="block reveal r2" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:1fr; gap:30px;">
-          <div class="agenda-row"><div class="agenda-time">00:00 — 00:30</div><div class="agenda-title">Estado actual de la inteligencia artificial</div><div class="paragraph-small">Modelos líderes, aplicaciones reales, oportunidades para gobierno, comunicación y producción de contenido.</div></div>
-          <div class="agenda-row"><div class="agenda-time">00:30 — 01:15</div><div class="agenda-title">Prompting con GPT y pensamiento estructurado</div><div class="paragraph-small">Cómo pedir, iterar, corregir, resumir, generar ideas y convertir objetivos en instrucciones claras.</div></div>
-          <div class="agenda-row"><div class="agenda-time">01:15 — 02:10</div><div class="agenda-title">Renders, diseño visual e imagen generativa</div><div class="paragraph-small">Creación de conceptos visuales, piezas de campaña, moodboards, variaciones y dirección de arte.</div></div>
-          <div class="agenda-row"><div class="agenda-time">02:10 — 03:00</div><div class="agenda-title">Video con IA y flujo de producción</div><div class="paragraph-small">Uso de modelos líderes para video, generación de clips, iteración visual y armado de entregables.</div></div>
+        <div class="block phase-grid reveal r2" style="left:785px; top:100px; width:1035px;">
+          <div class="phase"><div class="agenda-time">Fase 1</div><div class="card-title">Entrega de hardware</div><div class="paragraph-small" style="margin-top:22px; display:grid; gap:10px;"><div class="dot"><div>PCs</div></div><div class="dot"><div>Monitores</div></div><div class="dot"><div>Periféricos</div></div></div></div>
+          <div class="phase"><div class="agenda-time">Fase 2</div><div class="card-title">Instalación</div><div class="paragraph-small" style="margin-top:22px; display:grid; gap:10px;"><div class="dot"><div>Windows</div></div><div class="dot"><div>Drivers</div></div><div class="dot"><div>Configuración</div></div><div class="dot"><div>Red</div></div><div class="dot"><div>Cuentas</div></div></div></div>
+          <div class="phase"><div class="agenda-time">Fase 3</div><div class="card-title">Software</div><div class="paragraph-small" style="margin-top:22px; display:grid; gap:10px;"><div class="dot"><div>ChatGPT</div></div><div class="dot"><div>Plataforma PHATTY</div></div><div class="dot"><div>Herramientas IA</div></div><div class="dot"><div>Navegadores</div></div><div class="dot"><div>Utilerías</div></div></div></div>
+          <div class="phase"><div class="agenda-time">Fase 4</div><div class="card-title">Capacitación presencial</div><div class="paragraph-small" style="margin-top:22px;"><strong>2 días</strong><br><br>Día 1: fundamentos, prompting e imagen.<br><br>Día 2: video, automatización y casos reales.</div></div>
         </div>
       </section>
 
-      <section class="slide" data-slide="5" aria-label="Herramientas">
-        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Herramientas que Utilizaremos</div>
+      <section class="slide" data-slide="5" aria-label="Ecosistema tecnológico">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Ecosistema Tecnológico</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="tool-visual reveal r2" style="left:785px; top:100px; width:1035px; height:350px;"><img alt="PHATTY / Phatty Acid platform interface with AI model providers" src="assets/phatty-platform-tools.jpg"></div>
-        <div class="block reveal r3 card-title" style="left:785px; top:492px; width:1035px; font-size:28px;">Equipo de Marketing que utilizan:</div>
-        <div class="logo-row reveal r4" style="left:785px; top:540px; width:1035px;">
-          <div class="logo-card"><img alt="CEMEX" src="assets/logo-cemex.jpg"></div>
-          <div class="logo-card"><img alt="GNC Live Well" src="assets/logo-gnc.jpg"></div>
-          <div class="logo-card"><img alt="Vitro" src="assets/logo-vitro.jpg"></div>
-          <div class="logo-card"><img alt="Mary Kay" src="assets/logo-mary-kay.jpg"></div>
+        <div class="tool-visual reveal r2" style="left:785px; top:100px; width:1035px; height:295px;"><img alt="PHATTY / Phatty Acid platform interface with AI model providers" src="assets/phatty-platform-tools.jpg"></div>
+        <div class="block scope-grid reveal r3" style="left:785px; top:450px; width:1035px;">
+          <div class="scope-card"><div class="card-title">Hardware</div><div class="paragraph-small" style="display:grid; gap:10px;"><div class="dot"><div>PCs Windows</div></div><div class="dot"><div>Monitores</div></div><div class="dot"><div>Accesorios</div></div><div class="dot"><div>Regulador</div></div></div></div>
+          <div class="scope-card"><div class="card-title">Software</div><div class="paragraph-small" style="display:grid; gap:10px;"><div class="dot"><div>Windows</div></div><div class="dot"><div>Office</div></div><div class="dot"><div>Navegadores</div></div><div class="dot"><div>Drivers</div></div><div class="dot"><div>Utilerías</div></div></div></div>
+          <div class="scope-card"><div class="card-title">IA</div><div class="paragraph-small" style="display:grid; gap:10px;"><div class="dot"><div>PHATTY</div></div><div class="dot"><div>GPT</div></div><div class="dot"><div>Imagen</div></div><div class="dot"><div>Audio</div></div><div class="dot"><div>Video HD realista</div></div></div></div>
         </div>
-        <div class="block reveal r5 paragraph" style="left:785px; top:675px; width:1035px;"><p><strong>PHATTY / Phatty Acid como centro de producción</strong></p><p>Usaremos esta plataforma para trabajar con modelos líderes en un solo flujo: prompting, generación visual, video, renders, edición y armado de materiales.</p></div>
-        <div class="block reveal r6" style="left:785px; top:872px; width:1035px; display:flex; flex-wrap:wrap; gap:14px;">
-          <div class="tool-pill">GPT Prompting</div><div class="tool-pill">Kling</div><div class="tool-pill">Veo</div><div class="tool-pill">Sora</div><div class="tool-pill">Imagen</div><div class="tool-pill">Video IA</div><div class="tool-pill">Renders</div><div class="tool-pill">Diseño</div><div class="tool-pill">Flujos creativos</div>
+        <div class="block reveal r5 paragraph-small" style="left:785px; top:845px; width:1035px;">El valor está en dejar un ecosistema completo: hardware, software, plataforma de IA, cuentas listas y un flujo de producción utilizable por el equipo.</div>
+      </section>
+
+      <section class="slide" data-slide="6" aria-label="Alcance del proyecto">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Alcance del Proyecto</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Checklist operativo de lo que queda cubierto en la implementación.</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2 paragraph" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:28px 60px;">
+          <div class="check"><div>Compra de equipos</div></div>
+          <div class="check"><div>Configuración Windows</div></div>
+          <div class="check"><div>Instalación de software</div></div>
+          <div class="check"><div>Configuración de cuentas</div></div>
+          <div class="check"><div>Instalación de plataforma IA</div></div>
+          <div class="check"><div>Capacitación presencial</div></div>
+          <div class="check"><div>Casos prácticos</div></div>
+          <div class="check"><div>Acompañamiento posterior</div></div>
+        </div>
+        <div class="block rule-x reveal r4" style="left:785px; top:650px; width:1035px;"></div>
+        <div class="block reveal r5 paragraph" style="left:785px; top:710px; width:1035px;"><p><strong>Resultado:</strong> una estación de trabajo preparada para generar contenido con IA, personal capacitado y primeros casos de uso construidos durante el taller.</p></div>
+      </section>
+
+      <section class="slide" data-slide="7" aria-label="Entregables">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Entregables</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Esta es la diferencia clave: no se entrega solamente conocimiento. Se entrega operación lista.</div>
+        <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
+        <div class="block reveal r2 paragraph-small" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:24px 56px;">
+          <div class="check"><div>Equipos completamente configurados.</div></div>
+          <div class="check"><div>Windows optimizado.</div></div>
+          <div class="check"><div>Software instalado.</div></div>
+          <div class="check"><div>Cuentas listas para usar.</div></div>
+          <div class="check"><div>Plataforma PHATTY funcionando.</div></div>
+          <div class="check"><div>Accesos entregados.</div></div>
+          <div class="check"><div>Manual rápido.</div></div>
+          <div class="check"><div>Equipo capacitado.</div></div>
+          <div class="check"><div>Casos de uso desarrollados durante el taller.</div></div>
         </div>
       </section>
 
-      <section class="slide" data-slide="6" aria-label="Metodología">
-        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Metodología de Trabajo</div>
+      <section class="slide" data-slide="8" aria-label="Inversión">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Inversión</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">El monto se presenta como proyecto completo: infraestructura, implementación, licenciamiento, capacitación y seguimiento.</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="block reveal r2" style="left:785px; top:100px; width:1035px; display:grid; grid-template-columns:repeat(3,1fr); gap:34px;">
-          <div><div class="number">01</div><div class="card-title" style="margin-top:14px;">Demostración</div><div class="paragraph-small" style="margin-top:22px;">Explicación clara de herramientas, posibilidades, límites y mejores prácticas.</div></div>
-          <div><div class="number">02</div><div class="card-title" style="margin-top:14px;">Ejercicios prácticos</div><div class="paragraph-small" style="margin-top:22px;">Los participantes prueban prompts, generan variaciones y entienden cómo mejorar resultados.</div></div>
-          <div><div class="number">03</div><div class="card-title" style="margin-top:14px;">Taller guiado</div><div class="paragraph-small" style="margin-top:22px;">Aplicación directa a casos de comunicación, diseño, video y materiales institucionales.</div></div>
+        <div class="block reveal r2" style="left:785px; top:88px; width:1035px;">
+          <div class="table-row"><div><div class="card-title">Servicio profesional</div><div class="paragraph-small">Implementación, capacitación presencial de 2 días, puesta en marcha y seguimiento.</div></div><div class="amount">$120,000</div></div>
+          <div class="table-row"><div><div class="card-title">Infraestructura</div><div class="paragraph-small">PC GeForce RTX 5070, 32 GB, monitor LED, teclado, mouse, regulador, documentación, Windows e instalación.</div></div><div class="amount">$68,500</div></div>
+          <div class="table-row"><div><div class="card-title">Viáticos de instalación</div><div class="paragraph-small">2 personas, 2 noches de hotel, 2 días de trabajo, comidas y transporte.</div></div><div class="amount">$55,000</div></div>
+          <div class="table-row"><div><div class="card-title">Licencias anuales IA</div><div class="paragraph-small">Paquete anual de 3 licencias para generación de imágenes, audio y video HD realista.</div></div><div class="amount">$360,000</div></div>
         </div>
-        <div class="block rule-x reveal r3" style="left:785px; top:430px; width:1035px;"></div>
-        <div class="block reveal r4 paragraph" style="left:785px; top:485px; width:1035px;"><p><strong>Seguimiento posterior incluido</strong></p><p>Además de la sesión presencial, se incluyen <strong>3 reuniones por Zoom de 1 hora</strong>, una por semana, para repetir el ciclo: demostración, ejercicio, dudas y ajuste.</p></div>
-        <div class="method-loop reveal r5" style="left:785px; top:680px; height:230px;">
-          <div class="loop-node" style="left:0; top:48px; width:185px; height:82px;">Demo</div>
-          <div class="loop-arrow" style="left:210px; top:68px;">→</div>
-          <div class="loop-node" style="left:285px; top:48px; width:185px; height:82px;">Ejercicio</div>
-          <div class="loop-arrow" style="left:495px; top:68px;">→</div>
-          <div class="loop-node" style="left:570px; top:48px; width:185px; height:82px;">Dudas</div>
-          <div class="loop-arrow" style="left:780px; top:68px;">→</div>
-          <div class="loop-node" style="left:850px; top:48px; width:185px; height:82px;">Ajuste</div>
-          <div class="loop-arrow" style="left:968px; top:118px; font-size:54px;">↺</div>
-          <div class="loop-note" style="top:165px; bottom:auto;">Zoom semanal: se revisan avances, se resuelven bloqueos y el loop se repite con nuevos casos reales del equipo.</div>
-        </div>
+        <div class="block rule-x reveal r4" style="left:785px; top:775px; width:1035px;"></div>
+        <div class="block reveal r5 price" style="left:785px; top:815px; width:760px; font-size:116px;">$603,500</div>
+        <div class="block reveal r5 paragraph" style="left:1510px; top:832px; width:310px; text-align:right;"><p><strong>MXN</strong><br>más IVA</p></div>
       </section>
 
-      <section class="slide" data-slide="7" aria-label="Inversión y licenciamiento">
-        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Inversión y Licenciamiento</div>
+      <section class="slide" data-slide="9" aria-label="Licencias anuales de IA">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Licencias Anuales de IA</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Paquete para generación de contenido con IA: videos HD realistas en alta calidad, más generación de imágenes y audio para el equipo.</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="block reveal r2 price" style="left:785px; top:100px; width:1035px;">$120,000</div>
-        <div class="block reveal r2 paragraph" style="left:790px; top:250px; width:500px;"><p><strong>más IVA</strong></p></div>
-        <div class="block rule-x reveal r3" style="left:785px; top:350px; width:1035px;"></div>
-        <div class="block reveal r4 paragraph-small" style="left:785px; top:410px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:38px 56px;">
-          <div class="check"><div><strong>Sesión presencial de 3 horas</strong><br>Capacitación inicial para el equipo en Chiapas.</div></div>
-          <div class="check"><div><strong>3 sesiones Zoom de seguimiento</strong><br>Una hora por semana para acompañamiento y dudas.</div></div>
-          <div class="check"><div><strong>20,000 generation tokens incluidos</strong><br>Bolsa inicial para generación de imágenes, videos y pruebas dentro del flujo.</div></div>
-          <div class="check"><div><strong>Plan recomendado</strong><br>Uso inicial controlado para validar casos, medir valor y definir escalamiento posterior.</div></div>
+        <div class="block reveal r2 price" style="left:785px; top:100px; width:1035px; font-size:122px;">$360,000</div>
+        <div class="block reveal r2 paragraph" style="left:790px; top:228px; width:650px;"><p><strong>MXN anuales / 3 licencias</strong></p></div>
+        <div class="block rule-x reveal r3" style="left:785px; top:330px; width:1035px;"></div>
+        <div class="block reveal r4 paragraph-small" style="left:785px; top:390px; width:1035px; display:grid; grid-template-columns:1fr 1fr; gap:34px 56px;">
+          <div class="check"><div><strong>Imágenes ilimitadas</strong><br>Generación visual para campañas, piezas institucionales, conceptos y variantes.</div></div>
+          <div class="check"><div><strong>Audio ilimitado</strong><br>Voz, música, doblaje, efectos y recursos sonoros para piezas de contenido.</div></div>
+          <div class="check"><div><strong>Video HD realista</strong><br>Acceso a generación de video en máxima calidad con tope anual generoso.</div></div>
+          <div class="check"><div><strong>Soporte y reportes</strong><br>Soporte prioritario y reporte mensual de consumo en PDF.</div></div>
         </div>
-        <div class="block reveal r5 paragraph" style="left:785px; top:785px; width:1035px;"><p><strong>Retorno esperado:</strong> acelerar producción de materiales visuales, reducir tiempos de iteración y habilitar al equipo para prototipar contenido sin depender de procesos largos.</p></div>
+        <div class="block reveal r5 paragraph" style="left:785px; top:790px; width:1035px;"><p>Con este paquete el equipo puede producir contenido sin estar contando tokens día con día, manteniendo control anual de consumo y soporte operativo.</p></div>
       </section>
 
-      <section class="slide" data-slide="8" aria-label="Cierre">
-        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Siguiente Paso</div>
+      <section class="slide" data-slide="10" aria-label="Cronograma de implementación">
+        <div class="block reveal r1 headline-small" style="left:100px; top:100px; width:560px;">Cronograma de Implementación</div>
+        <div class="block reveal r1 paragraph-small" style="left:100px; top:350px; width:520px;">Un mes para pasar de compra y preparación a operación real del Centro de IA.</div>
         <div class="block rule-y reveal r2" style="left:720px; top:100px; height:790px;"></div>
-        <div class="block reveal r2 display-title" style="left:785px; top:100px; width:1035px; font-size:112px; line-height:.9;">validar fecha<br>y equipo<br>participante</div>
-        <div class="block rule-x reveal r3" style="left:785px; top:505px; width:1035px;"></div>
-        <div class="block reveal r4 paragraph" style="left:785px; top:565px; width:1035px;"><p>Una vez confirmada la fecha, se prepara el contenido final, ejemplos visuales y ejercicios prácticos alineados a las necesidades del equipo del Gobierno de Chiapas.</p></div>
-        <div class="block reveal r5 paragraph-small" style="left:785px; top:760px; width:1035px; display:grid; grid-template-columns:repeat(3,1fr); gap:34px;">
-          <div><strong>01</strong><br>Confirmar fecha y lugar</div>
-          <div><strong>02</strong><br>Definir perfil de participantes</div>
-          <div><strong>03</strong><br>Preparar casos de uso prioritarios</div>
+        <div class="block phase-grid reveal r2" style="left:785px; top:100px; width:1035px;">
+          <div class="phase"><div class="agenda-time">Semana 1</div><div class="card-title">Compra de equipos</div><div class="paragraph-small" style="margin-top:22px;">Cotización, adquisición, coordinación logística y preparación de hardware.</div></div>
+          <div class="phase"><div class="agenda-time">Semana 2</div><div class="card-title">Instalación y configuración</div><div class="paragraph-small" style="margin-top:22px;">Windows, drivers, red, periféricos, cuentas, plataforma PHATTY y utilerías.</div></div>
+          <div class="phase"><div class="agenda-time">Semana 3</div><div class="card-title">Capacitación presencial</div><div class="paragraph-small" style="margin-top:22px;">2 días: fundamentos, prompting, imagen, video, automatización y casos reales.</div></div>
+          <div class="phase"><div class="agenda-time">Semana 4</div><div class="card-title">Seguimiento e inicio</div><div class="paragraph-small" style="margin-top:22px;">Ajustes, resolución de dudas, primeros entregables y arranque formal de operación.</div></div>
         </div>
         <div class="block rule-x reveal r6" style="left:100px; top:982px; width:1720px;"></div>
       </section>
@@ -340,7 +270,7 @@
 
   <nav class="deck-controls" aria-label="Presentation controls">
     <button id="prevSlide" type="button">Prev</button>
-    <span id="slideCounter">1 / 8</span>
+    <span id="slideCounter">1 / 10</span>
     <button id="nextSlide" type="button">Next</button>
   </nav>
 
@@ -349,7 +279,7 @@
       constructor() {
         this.stage = document.getElementById('deckStage');
         this.slides = Array.from(document.querySelectorAll('.slide'));
-        this.storageKey = `${location.pathname}:chiapasProposalSlide`;
+        this.storageKey = `${location.pathname}:chiapasCenterImplementationSlide`;
         this.current = Number(localStorage.getItem(this.storageKey) || 0);
         this.current = Math.max(0, Math.min(this.current, this.slides.length - 1));
         this.counter = document.getElementById('slideCounter');
