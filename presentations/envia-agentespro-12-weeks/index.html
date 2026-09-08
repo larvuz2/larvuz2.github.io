@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Envia.com × agentesPRO — Agent System · 12-Week Program</title>
+<title>Envia.com × agentesPRO — Sistema de Agentes · Programa de 12 semanas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -69,6 +69,7 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
 .deck-controls button:hover{border-color:var(--fg);color:var(--fg)}
 #slideCounter{font-size:13px;color:var(--faint);font-weight:700;letter-spacing:.1em}
 
+body.portrait .deck-controls{transform:translateX(-50%) rotate(90deg);left:auto;right:-30px;bottom:50%}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.slide .r{opacity:1;transform:none}}
 @media print{
   @page{size:1920px 1080px;margin:0}
@@ -89,23 +90,23 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
 <section class="slide active visible" data-slide="1">
   <div class="grid-bg"></div>
   <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center">
-    <div class="kicker r">Agent System · 12-Week Program</div>
-    <h1 class="r" style="margin-top:40px">Envia.com<br>runs on agents.</h1>
-    <p class="lead r" style="margin-top:50px">A CEO-level Master Agent, a Marketing Agent, and the integrations that feed them. Built on Hermes by agentesPRO.</p>
+    <div class="kicker r">Sistema de Agentes · Programa de 12 semanas</div>
+    <h1 class="r" style="margin-top:40px">Envia.com<br>opera con agentes.</h1>
+    <p class="lead r" style="margin-top:50px">Un Agente Maestro a nivel CEO, un Agente de Marketing y las integraciones que los alimentan. Construido sobre Hermes por agentesPRO.</p>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt="Envia.com"><span class="x">×</span><img src="assets/agentespro-white.svg" alt="agentesPRO"></div>
-  <div class="foot">Sept 2026 · For CTO · Lead Dev · PM</div>
+  <div class="foot">Sept 2026 · Para CTO · Lead Dev · PM</div>
 </section>
 
 <!-- 02 WHAT -->
 <section class="slide" data-slide="2">
   <div class="num">02</div>
-  <div class="kicker r">What we're building</div>
-  <h2 class="r" style="margin-top:40px;max-width:1500px">Two agents. One shared brain. Dozens of connections.</h2>
+  <div class="kicker r">Qué vamos a construir</div>
+  <h2 class="r" style="margin-top:40px;max-width:1500px">Dos agentes. Un cerebro compartido. Decenas de conexiones.</h2>
   <div class="r" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-top:90px">
-    <div class="box solid">Master Agent<small>CEO · reads everything</small></div>
-    <div class="box">Marketing Agent<small>Content · brand · performance</small></div>
-    <div class="box ghost">Next agents<small>Sales · Ops · Support · Finance</small></div>
+    <div class="box solid">Agente Maestro<small>CEO · lee todo</small></div>
+    <div class="box">Agente de Marketing<small>Contenido · marca · resultados</small></div>
+    <div class="box ghost">Siguientes agentes<small>Ventas · Ops · Soporte · Finanzas</small></div>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
 </section>
@@ -113,116 +114,116 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
 <!-- 03 ARCHITECTURE -->
 <section class="slide" data-slide="3">
   <div class="num">03</div>
-  <div class="kicker r">Architecture</div>
+  <div class="kicker r">Arquitectura</div>
   <div class="r" style="margin-top:70px;display:grid;grid-template-rows:auto auto auto;gap:36px">
     <div style="display:grid;grid-template-columns:1fr;gap:26px">
-      <div class="box solid" style="text-align:center;padding:28px">Master Agent<small>Hermes profile · envia-master</small></div>
+      <div class="box solid" style="text-align:center;padding:28px">Agente Maestro<small>Perfil Hermes · envia-master</small></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:26px">
-      <div class="box" style="padding:26px 30px;font-size:30px">Marketing<small>Phase 1</small></div>
-      <div class="box ghost" style="padding:26px 30px;font-size:30px">Sales<small>Phase 2</small></div>
-      <div class="box ghost" style="padding:26px 30px;font-size:30px">Operations<small>Phase 2 · Envia MCP</small></div>
-      <div class="box ghost" style="padding:26px 30px;font-size:30px">Support<small>Phase 2</small></div>
+      <div class="box" style="padding:26px 30px;font-size:30px">Marketing<small>Fase 1</small></div>
+      <div class="box ghost" style="padding:26px 30px;font-size:30px">Ventas<small>Fase 2</small></div>
+      <div class="box ghost" style="padding:26px 30px;font-size:30px">Operaciones<small>Fase 2 · Envia MCP</small></div>
+      <div class="box ghost" style="padding:26px 30px;font-size:30px">Soporte<small>Fase 2</small></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:36px;margin-top:40px">
-      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Knowledge base<small>Drive · fresh data</small></div>
-      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Brand kit<small>Logo · voice · assets</small></div>
-      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Tool layer<small>treg · Monid · Google · Envia MCP</small></div>
-      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Security<small>Redaction · approvals · perms</small></div>
+      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Base de conocimiento<small>Drive · datos frescos</small></div>
+      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Kit de marca<small>Logo · voz · assets</small></div>
+      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Capa de herramientas<small>treg · Monid · Google · Envia MCP</small></div>
+      <div class="box" style="border-style:dashed;padding:24px 30px;font-size:26px">Seguridad<small>Redacción · aprobaciones · permisos</small></div>
     </div>
   </div>
-  <div class="r" style="margin-top:60px;font-size:24px;color:var(--dim);font-weight:700;letter-spacing:.06em">ONE HERMES PROFILE PER AGENT · ISOLATED CREDENTIALS, MEMORY, SESSIONS · SHARED LAYER UNDERNEATH</div>
+  <div class="r" style="margin-top:60px;font-size:24px;color:var(--dim);font-weight:700;letter-spacing:.06em">UN PERFIL HERMES POR AGENTE · CREDENCIALES, MEMORIA Y SESIONES AISLADAS · CAPA COMPARTIDA DEBAJO</div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
 </section>
 
 <!-- 04 HOW AN AGENT WORKS -->
 <section class="slide" data-slide="4">
   <div class="num">04</div>
-  <div class="kicker r">How one agent works</div>
-  <h2 class="r" style="margin-top:40px">Read → Think → Draft → Approve → Act</h2>
+  <div class="kicker r">Cómo funciona un agente</div>
+  <h2 class="r" style="margin-top:40px">Leer → Pensar → Borrador → Aprobar → Actuar</h2>
   <div class="r" style="display:grid;grid-template-columns:repeat(5,1fr);gap:24px;margin-top:90px;align-items:stretch">
-    <div class="box" style="font-size:28px">Data sources<small>GA4 · BI · Drive · APIs</small></div>
-    <div class="box solid" style="font-size:28px">Agent<small>AGENT.md · TOOLS.md · CRON.md</small></div>
-    <div class="box" style="font-size:28px">Draft output<small>Brief · deck · post · report</small></div>
-    <div class="box" style="font-size:28px;border-style:dashed">Human gate<small>Telegram / WhatsApp</small></div>
-    <div class="box" style="font-size:28px">Action<small>Send · publish · write</small></div>
+    <div class="box" style="font-size:28px">Fuentes de datos<small>GA4 · BI · Drive · APIs</small></div>
+    <div class="box solid" style="font-size:28px">Agente<small>AGENT.md · TOOLS.md · CRON.md</small></div>
+    <div class="box" style="font-size:28px">Borrador<small>Brief · deck · post · reporte</small></div>
+    <div class="box" style="font-size:28px;border-style:dashed">Aprobación humana<small>Telegram / WhatsApp</small></div>
+    <div class="box" style="font-size:28px">Acción<small>Enviar · publicar · escribir</small></div>
   </div>
-  <p class="lead r" style="margin-top:80px;font-size:32px">Every agent is a folder of markdown files. Change the file, change the behavior. No custom runtime.</p>
+  <p class="lead r" style="margin-top:80px;font-size:32px">Cada agente es una carpeta de archivos markdown. Cambias el archivo, cambias el comportamiento. Sin runtime a la medida.</p>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
 </section>
 
 <!-- 05 MASTER -->
 <section class="slide" data-slide="5">
   <div class="num">05</div>
-  <div class="kicker r">Agent 01</div>
-  <h2 class="r" style="margin-top:40px">Master Agent <span style="color:var(--dim);font-weight:500">· the CEO's operating brain</span></h2>
+  <div class="kicker r">Agente 01</div>
+  <h2 class="r" style="margin-top:40px">Agente Maestro <span style="color:var(--dim);font-weight:500">· el cerebro operativo del CEO</span></h2>
   <div class="cols r" style="grid-template-columns:1fr 1fr 1fr;margin-top:80px">
-    <div class="col"><h3>Reads</h3><ul>
-      <li><b>Live KPIs</b> · shipments, revenue, carriers, countries</li>
-      <li><b>Team results</b> · every department agent</li>
-      <li><b>Market</b> · competitors, trends, news</li></ul></div>
-    <div class="col"><h3>Tools</h3><ul>
-      <li><b>treg · Monid</b> · data + endpoints</li>
+    <div class="col"><h3>Lee</h3><ul>
+      <li><b>KPIs en vivo</b> · envíos, ingresos, paqueterías, países</li>
+      <li><b>Resultados del equipo</b> · cada agente de área</li>
+      <li><b>Mercado</b> · competencia, tendencias, noticias</li></ul></div>
+    <div class="col"><h3>Herramientas</h3><ul>
+      <li><b>treg · Monid</b> · datos + endpoints</li>
       <li><b>Google</b> · Analytics, Search, Trends, Workspace</li>
-      <li><b>Envia MCP</b> read-only · decks, video, posters</li></ul></div>
-    <div class="col"><h3>Produces</h3><ul>
-      <li><b>Daily 7 AM brief</b></li>
-      <li><b>Weekly KPI report</b> + what changed</li>
-      <li><b>Branded decks</b> and memos on request</li></ul></div>
+      <li><b>Envia MCP</b> solo lectura · decks, video, posters</li></ul></div>
+    <div class="col"><h3>Produce</h3><ul>
+      <li><b>Brief diario 7 AM</b></li>
+      <li><b>Reporte semanal de KPIs</b> + qué cambió</li>
+      <li><b>Decks con marca</b> y memos bajo demanda</li></ul></div>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
-  <div class="foot">Reads everything · writes only with approval</div>
+  <div class="foot">Lee todo · escribe solo con aprobación</div>
 </section>
 
 <!-- 06 MARKETING -->
 <section class="slide" data-slide="6">
   <div class="num">06</div>
-  <div class="kicker r">Agent 02</div>
-  <h2 class="r" style="margin-top:40px">Marketing Agent <span style="color:var(--dim);font-weight:500">· content engine, always on brand</span></h2>
+  <div class="kicker r">Agente 02</div>
+  <h2 class="r" style="margin-top:40px">Agente de Marketing <span style="color:var(--dim);font-weight:500">· motor de contenido, siempre en marca</span></h2>
   <div class="cols r" style="grid-template-columns:1fr 1fr 1fr;margin-top:80px">
-    <div class="col"><h3>Reads</h3><ul>
-      <li><b>Brand kit</b> · logo, voice, templates</li>
+    <div class="col"><h3>Lee</h3><ul>
+      <li><b>Kit de marca</b> · logo, voz, plantillas</li>
       <li><b>GA4 · Search Console · Ads</b></li>
-      <li><b>Social analytics</b> · competitors' content</li></ul></div>
-    <div class="col"><h3>Tools</h3><ul>
-      <li><b>treg · Monid</b> · keyword demand</li>
-      <li><b>Image + video generation</b> with Envia logo</li>
-      <li><b>Drive asset library</b> · scheduler (gated)</li></ul></div>
-    <div class="col"><h3>Produces</h3><ul>
-      <li><b>Weekly content calendar</b> · MX · ES · CO · BR</li>
-      <li><b>Posts, ads, posters, short videos</b> as drafts</li>
-      <li><b>Monthly report</b> → feeds Master</li></ul></div>
+      <li><b>Analítica social</b> · contenido de la competencia</li></ul></div>
+    <div class="col"><h3>Herramientas</h3><ul>
+      <li><b>treg · Monid</b> · demanda de keywords</li>
+      <li><b>Generación de imagen + video</b> con logo Envia</li>
+      <li><b>Biblioteca de assets en Drive</b> · scheduler (con aprobación)</li></ul></div>
+    <div class="col"><h3>Produce</h3><ul>
+      <li><b>Calendario semanal de contenido</b> · MX · ES · CO · BR</li>
+      <li><b>Posts, anuncios, posters, videos cortos</b> como borradores</li>
+      <li><b>Reporte mensual</b> → alimenta al Maestro</li></ul></div>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
-  <div class="foot">Nothing publishes without a human</div>
+  <div class="foot">Nada se publica sin una persona</div>
 </section>
 
 <!-- 07 INTEGRATIONS -->
 <section class="slide" data-slide="7">
   <div class="num">07</div>
-  <div class="kicker r">Integrations</div>
-  <h2 class="r" style="margin-top:30px">Phase 1 connections</h2>
+  <div class="kicker r">Integraciones</div>
+  <h2 class="r" style="margin-top:30px">Conexiones Fase 1</h2>
   <div class="chips r" style="margin-top:50px">
-    <span class="chip">Google Workspace</span><span class="chip">Google Analytics 4</span><span class="chip">Search Console</span><span class="chip">Google Trends</span><span class="chip">Google Ads · read</span><span class="chip">treg</span><span class="chip">Monid</span><span class="chip">Web research · EXA</span><span class="chip">Envia MCP · sandbox</span><span class="chip">Power BI / Looker exports</span><span class="chip">Salesforce · Pipedrive · read</span><span class="chip">Meta · LinkedIn · TikTok analytics</span><span class="chip">Image · video · deck generators</span><span class="chip">Telegram / WhatsApp</span>
+    <span class="chip">Google Workspace</span><span class="chip">Google Analytics 4</span><span class="chip">Search Console</span><span class="chip">Google Trends</span><span class="chip">Google Ads · lectura</span><span class="chip">treg</span><span class="chip">Monid</span><span class="chip">Investigación web · EXA</span><span class="chip">Envia MCP · sandbox</span><span class="chip">Power BI / Looker exports</span><span class="chip">Salesforce · Pipedrive · lectura</span><span class="chip">Meta · LinkedIn · TikTok analytics</span><span class="chip">Generadores de imagen · video · decks</span><span class="chip">Telegram / WhatsApp</span>
   </div>
-  <div class="kicker r" style="margin-top:56px">Phase 2</div>
+  <div class="kicker r" style="margin-top:56px">Fase 2</div>
   <div class="chips r" style="margin-top:22px;max-width:1500px">
-    <span class="chip g">Odoo</span><span class="chip g">WMS</span><span class="chip g">Ecart Pay</span><span class="chip g">Zendesk · WhatsApp Business</span><span class="chip g">RD Station</span><span class="chip g">Marketplace APIs</span><span class="chip g">Envia MCP · write</span>
+    <span class="chip g">Odoo</span><span class="chip g">WMS</span><span class="chip g">Ecart Pay</span><span class="chip g">Zendesk · WhatsApp Business</span><span class="chip g">RD Station</span><span class="chip g">Marketplace APIs</span><span class="chip g">Envia MCP · escritura</span>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
-  <div class="foot">Read-only first · write after trust</div>
+  <div class="foot">Primero lectura · escritura cuando hay confianza</div>
 </section>
 
 <!-- 08 TIMELINE -->
 <section class="slide" data-slide="8">
   <div class="num">08</div>
-  <div class="kicker r">The plan</div>
-  <h2 class="r" style="margin-top:40px">12 weeks. Four moves.</h2>
+  <div class="kicker r">El plan</div>
+  <h2 class="r" style="margin-top:40px">12 semanas. Cuatro movimientos.</h2>
   <div class="tl r">
-    <div class="ph now"><div class="w">Weeks 1–3</div><div class="t">Foundation</div><ul><li>Access, NDA, brand kit</li><li>VPS + Hermes profiles</li><li>Security baseline</li><li>Bible + 9 core docs</li></ul></div>
-    <div class="ph"><div class="w">Weeks 4–6</div><div class="t">Master live</div><ul><li>Knowledge base synced</li><li>Daily 7 AM brief</li><li>Weekly KPI report</li><li>First branded deck</li></ul></div>
-    <div class="ph"><div class="w">Weeks 7–9</div><div class="t">Marketing live</div><ul><li>Brand kit loaded</li><li>Content calendar</li><li>Posters + videos as drafts</li><li>Approval flow end-to-end</li></ul></div>
-    <div class="ph"><div class="w">Weeks 10–12</div><div class="t">Harden + scale</div><ul><li>CEO + marketing test sessions</li><li>Team training (ES)</li><li>Envia MCP write tools</li><li>Phase 2 scope: Sales · Ops · Support</li></ul></div>
+    <div class="ph now"><div class="w">Semanas 1–3</div><div class="t">Fundación</div><ul><li>Accesos, NDA, kit de marca</li><li>VPS + perfiles Hermes</li><li>Baseline de seguridad</li><li>Biblia + 9 docs base</li></ul></div>
+    <div class="ph"><div class="w">Semanas 4–6</div><div class="t">Maestro en vivo</div><ul><li>Base de conocimiento sincronizada</li><li>Brief diario 7 AM</li><li>Reporte semanal de KPIs</li><li>Primer deck con marca</li></ul></div>
+    <div class="ph"><div class="w">Semanas 7–9</div><div class="t">Marketing en vivo</div><ul><li>Kit de marca cargado</li><li>Calendario de contenido</li><li>Posters + videos en borrador</li><li>Flujo de aprobación completo</li></ul></div>
+    <div class="ph"><div class="w">Semanas 10–12</div><div class="t">Robustecer + escalar</div><ul><li>Sesiones de prueba CEO + marketing</li><li>Capacitación del equipo</li><li>Envia MCP con escritura</li><li>Alcance Fase 2: Ventas · Ops · Soporte</li></ul></div>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
 </section>
@@ -230,21 +231,21 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
 <!-- 09 WEEK 1 -->
 <section class="slide" data-slide="9">
   <div class="num">09</div>
-  <div class="kicker r">How we start</div>
-  <h2 class="r" style="margin-top:40px">Week 1 · what we need from you</h2>
+  <div class="kicker r">Cómo empezamos</div>
+  <h2 class="r" style="margin-top:40px">Semana 1 · qué necesitamos</h2>
   <div class="cols r" style="grid-template-columns:1fr 1fr;margin-top:80px;gap:120px">
-    <div class="col"><h3>From Envia</h3><ul>
-      <li><b>Kickoff</b> · CEO + marketing lead + CTO</li>
-      <li><b>Brand kit</b> · logo, palette, fonts, videos</li>
-      <li><b>Read access</b> · GA4, Search Console, Ads, BI</li>
-      <li><b>API sandbox key</b> · Envia MCP</li>
-      <li><b>One Workspace account</b> for the agents</li></ul></div>
-    <div class="col"><h3>From agentesPRO</h3><ul>
-      <li><b>VPS</b> dedicated to Envia</li>
-      <li><b>Profiles</b> · envia-master · envia-marketing</li>
-      <li><b>Security baseline</b> applied and verified</li>
-      <li><b>Drive structure</b> · Bible · Brand · Knowledge · Reports</li>
-      <li><b>Delivery channel</b> · Telegram or WhatsApp</li></ul></div>
+    <div class="col"><h3>De Envia</h3><ul>
+      <li><b>Kickoff</b> · CEO + líder de marketing + CTO</li>
+      <li><b>Kit de marca</b> · logo, paleta, tipografías, videos</li>
+      <li><b>Acceso de lectura</b> · GA4, Search Console, Ads, BI</li>
+      <li><b>API key sandbox</b> · Envia MCP</li>
+      <li><b>Una cuenta Workspace</b> para los agentes</li></ul></div>
+    <div class="col"><h3>De agentesPRO</h3><ul>
+      <li><b>VPS</b> dedicado a Envia</li>
+      <li><b>Perfiles</b> · envia-master · envia-marketing</li>
+      <li><b>Baseline de seguridad</b> aplicado y verificado</li>
+      <li><b>Estructura en Drive</b> · Biblia · Marca · Conocimiento · Reportes</li>
+      <li><b>Canal de entrega</b> · Telegram o WhatsApp</li></ul></div>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
 </section>
@@ -254,9 +255,9 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
   <div class="grid-bg"></div>
   <div class="num">10</div>
   <div style="position:relative;height:100%;display:flex;flex-direction:column;justify-content:center">
-    <div class="kicker r">Principles</div>
-    <h2 class="r" style="margin-top:40px;font-size:84px;line-height:1.08">Draft by default.<br>Sources on every number.<br>One agent, one owner.<br>Read first, write after trust.</h2>
-    <p class="lead r" style="margin-top:60px">Next step: kickoff date + access list. We ship the Foundation in three weeks.</p>
+    <div class="kicker r">Principios</div>
+    <h2 class="r" style="margin-top:40px;font-size:84px;line-height:1.08">Borrador por default.<br>Fuentes en cada número.<br>Un agente, un responsable.<br>Primero leer, escribir con confianza.</h2>
+    <p class="lead r" style="margin-top:60px">Siguiente paso: fecha de kickoff + lista de accesos. Entregamos la Fundación en tres semanas.</p>
   </div>
   <div class="brand"><img src="assets/envia-white.svg" alt=""><span class="x">×</span><img src="assets/agentespro-white.svg" alt=""></div>
   <div class="foot">agentespro.app</div>
@@ -266,9 +267,9 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
 </div>
 
 <nav class="deck-controls" aria-label="Presentation controls">
-  <button id="prevSlide">Prev</button>
+  <button id="prevSlide">Anterior</button>
   <span id="slideCounter">1 / 10</span>
-  <button id="nextSlide">Next</button>
+  <button id="nextSlide">Siguiente</button>
 </nav>
 
 <script>
@@ -277,14 +278,15 @@ p.lead{font-size:38px;line-height:1.3;color:var(--dim);font-weight:500;max-width
   const slides=[...document.querySelectorAll('.slide')];
   const counter=document.getElementById('slideCounter');
   let i=0;
-  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`scale(${s})`;}
+  function fit(){const vw=(visualViewport&&visualViewport.width)||innerWidth||document.documentElement.clientWidth;const vh=(visualViewport&&visualViewport.height)||innerHeight||document.documentElement.clientHeight;
+    const s=Math.min(vw/1920,vh/1080);stage.style.transform=`scale(${s})`;stage.style.flexShrink='0';document.body.classList.remove('portrait');}
   function show(n){
     n=Math.max(0,Math.min(slides.length-1,n));
     slides.forEach((s,k)=>{s.classList.toggle('active',k===n);s.classList.toggle('visible',k===n);});
     i=n;counter.textContent=`${n+1} / ${slides.length}`;
     location.hash='s'+(n+1);
   }
-  addEventListener('resize',fit);fit();
+  addEventListener('resize',fit);addEventListener('orientationchange',fit);if(visualViewport)visualViewport.addEventListener('resize',fit);fit();setTimeout(fit,300);addEventListener('load',fit);
   document.getElementById('nextSlide').onclick=()=>show(i+1);
   document.getElementById('prevSlide').onclick=()=>show(i-1);
   addEventListener('keydown',e=>{
